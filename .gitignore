@@ -1,0 +1,11 @@
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Ignore backend build artifacts
+backend/node_modules/
+backend/dist/
+backend/.env
