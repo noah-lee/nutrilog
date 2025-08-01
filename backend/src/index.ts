@@ -1,19 +1,26 @@
+import { dbConnect, db } from "@/config/db";
 import Fastify from "fastify";
-import dotenv from "dotenv";
 
-dotenv.config();
+const fastify = Fastify({ logger: true });
 
-const fastify = Fastify({
-  logger: true,
+fastify.get("/", async function (request, reply) {
+  try {
+    const res = await db.query("SELECT NOW() as time");
+    reply.send({ time: res.rows[0].time });
+  } catch (err) {
+    fastify.log.error(err);
+    reply.status(500).send({ error: "Database error" });
+  }
 });
 
-fastify.get("/", function (request, reply) {
-  reply.send({ hello: "world" });
-});
-
-fastify.listen({ port: 3000, host: '0.0.0.0' }, function (err, address) {
-  if (err) {
+const start = async () => {
+  try {
+    await dbConnect();
+    await fastify.listen({ port: 3000, host: "0.0.0.0" });
+  } catch (err) {
     fastify.log.error(err);
     process.exit(1);
   }
-});
+};
+
+start();
