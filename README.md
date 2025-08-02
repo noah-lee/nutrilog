@@ -12,8 +12,6 @@ This application provides a minimal interface for users to log their food intake
   - Calories burned and duration for activities
 
 - The LLM returns a **strict JSON** response, which is used to:
-  - **Update a dictionary** of known foods and activities  
-    (stored with embeddings for future similarity matching)
   - **Create timestamped entries** for food and activity logs
 
 - The frontend fetches this information to:

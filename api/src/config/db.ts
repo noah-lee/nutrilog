@@ -1,13 +1,12 @@
-import dotenv from "dotenv";
 import { Client } from "pg";
-
+import dotenv from "dotenv";
 dotenv.config();
 
 export const db = new Client({
   connectionString: process.env.DATABASE_URL,
 });
 
-export const dbConnect = async () => {
+export const connectToDB = async () => {
   let retries = 5;
   while (retries) {
     try {
