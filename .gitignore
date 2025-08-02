@@ -1,11 +1,11 @@
-# VS Code
-.vscode/
+# root
+.env
 
-# OS
-.DS_Store
-Thumbs.db
+# api
+api/node_modules/
+api/dist/
+api/.env
 
-# Ignore backend build artifacts
-backend/node_modules/
-backend/dist/
-backend/.env
+# db
+db/node_modules/
+db/.env

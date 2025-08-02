@@ -5,8 +5,13 @@ const fastify = Fastify({ logger: true });
 
 fastify.get("/", async function (request, reply) {
   try {
-    const res = await db.query("SELECT NOW() as time");
-    reply.send({ time: res.rows[0].time });
+    const res = await db.query(
+      `SELECT column_name, data_type
+   FROM information_schema.columns
+   WHERE table_schema = 'public' AND table_name = $1`,
+      ["users"]
+    );
+    reply.send({ columns: res.rows });
   } catch (err) {
     fastify.log.error(err);
     reply.status(500).send({ error: "Database error" });
