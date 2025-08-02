@@ -9,7 +9,7 @@ fastify.get("/", async function (request, reply) {
       `SELECT column_name, data_type
    FROM information_schema.columns
    WHERE table_schema = 'public' AND table_name = $1`,
-      ["users"]
+      ["food_logs"]
     );
     reply.send({ columns: res.rows });
   } catch (err) {
