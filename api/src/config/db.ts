@@ -9,6 +9,7 @@ export const db = new Client({
 export const connectToDB = async () => {
   let retries = 5;
   while (retries) {
+    console.log("Connecting to the database... remaining attempts:", retries);
     try {
       await db.connect();
       return;
