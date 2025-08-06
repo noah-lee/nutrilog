@@ -1,6 +1,5 @@
-import Fastify from "fastify";
 import apiRoutes from "@/api/routes";
-import { connectToDB } from "@/config/db";
+import Fastify from "fastify";
 
 const fastify = Fastify({ logger: true });
 
@@ -8,7 +7,6 @@ fastify.register(apiRoutes, { prefix: "/api" });
 
 const start = async () => {
   try {
-    await connectToDB();
     await fastify.listen({ port: 3000, host: "0.0.0.0" });
   } catch (err) {
     fastify.log.error(err);

@@ -1,14 +1,8 @@
-import { ingestHandler } from "@/api/controllers";
-import { ingestSchema } from "@/api/schemas";
-import { IngestRequest, IngestResponse } from "@/api/type";
 import { FastifyInstance } from "fastify";
+import nutritionRoutes from "@/api/nutrition/routes";
 
 const apiRoutes = (fastify: FastifyInstance) => {
-  fastify.post<{ Body: IngestRequest, Reply: IngestResponse }>(
-    "/ingest",
-    { schema: ingestSchema },
-    ingestHandler
-  );
+  fastify.register(nutritionRoutes, { prefix: "/nutrition" });
 };
 
 export default apiRoutes;
