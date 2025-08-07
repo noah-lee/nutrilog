@@ -1,5 +1,5 @@
 import db from "@/db/config";
-import { ActivityLogInsert } from "@/api/nutrition/activities/types";
+import { ActivityLogInsert, ActivityLogUpdateBody } from "@/api/nutrition/activities/types";
 
 export const addActivityLogs = async (logs: ActivityLogInsert[]) => {
   if (logs.length === 0) {
@@ -14,4 +14,21 @@ export const addActivityLogs = async (logs: ActivityLogInsert[]) => {
 
 export const getActivityLogs = async () => {
   return await db.selectFrom("activity_logs").selectAll().execute();
+};
+
+export const updateActivityLog = async (id: number, data: ActivityLogUpdateBody) => {
+  return await db
+    .updateTable("activity_logs")
+    .set(data)
+    .where("id", "=", id)
+    .returningAll()
+    .executeTakeFirst();
+};
+
+export const deleteActivityLog = async (id: number) => {
+  return await db
+    .deleteFrom("activity_logs")
+    .where("id", "=", id)
+    .returningAll()
+    .executeTakeFirst();
 };

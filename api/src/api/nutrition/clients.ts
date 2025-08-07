@@ -1,3 +1,5 @@
+import { ActivityLogInsert } from "@/api/nutrition/activities/types";
+import { FoodLogInsert } from "@/api/nutrition/foods/types";
 import { NutritionSummary } from "@/api/nutrition/type";
 import { API_KEY, API_URL } from "@/llm/config";
 
@@ -31,12 +33,11 @@ Return only this strict JSON:
 }
 No extra commentary or formatting.
 `;
+
 const MODEL = "gpt-4.1-nano";
 const MAX_TOKENS = 1000;
 
-export const getLLMNutritionSummary = async (
-  input: string
-): Promise<NutritionSummary> => {
+export const getOpenAINutritionSummary = async (input: string) => {
   const messages = [
     { role: "system", content: SYSTEM_PROMPT },
     { role: "user", content: input },
@@ -71,7 +72,7 @@ export const getLLMNutritionSummary = async (
   try {
     const nutritionSummary = JSON.parse(content);
 
-    if (!validateLLMResponse(nutritionSummary)) {
+    if (!isNutritionSummary(nutritionSummary)) {
       throw new Error("Invalid nutrition data format.");
     }
 
@@ -81,39 +82,37 @@ export const getLLMNutritionSummary = async (
   }
 };
 
-const validateLLMResponse = (data: unknown): boolean => {
-  if (typeof data !== "object" || data === null) {
+const isFoodLog = (value: unknown): value is FoodLogInsert => {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    typeof (value as FoodLogInsert).description === "string" &&
+    typeof (value as FoodLogInsert).calories === "number" &&
+    typeof (value as FoodLogInsert).protein === "number"
+  );
+};
+
+const isActivityLog = (value: unknown): value is ActivityLogInsert => {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    typeof (value as ActivityLogInsert).description === "string" &&
+    typeof (value as ActivityLogInsert).calories === "number"
+  );
+};
+
+const isNutritionSummary = (value: unknown): value is NutritionSummary => {
+  if (typeof value !== "object" || value === null) {
     return false;
   }
 
-  const foods = (data as Record<string, unknown>).foods;
-  const activities = (data as Record<string, unknown>).activities;
-  if (!Array.isArray(foods) || !Array.isArray(activities)) {
-    return false;
-  }
+  const candidate = value as Partial<NutritionSummary>;
 
-  // Validate foods array (can be empty, but if not, all items must have required fields)
-  if (!foods.every(
-    (food) =>
-      typeof food === "object" &&
-      food !== null &&
-      typeof (food as any).description === "string" &&
-      typeof (food as any).calories === "number" &&
-      typeof (food as any).protein === "number"
-  )) {
-    return false;
-  }
-
-  // Validate activities array (can be empty, but if not, all items must have required fields)
-  if (!activities.every(
-    (activity) =>
-      typeof activity === "object" &&
-      activity !== null &&
-      typeof (activity as any).description === "string" &&
-      typeof (activity as any).calories === "number"
-  )) {
-    return false;
-  }
-
-  return true;
+  return (
+    Array.isArray(candidate.foods) &&
+    Array.isArray(candidate.activities) &&
+    typeof candidate.feedback === "string" &&
+    candidate.foods.every(isFoodLog) &&
+    candidate.activities.every(isActivityLog)
+  );
 };
