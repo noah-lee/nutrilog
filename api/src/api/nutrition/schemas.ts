@@ -6,6 +6,5 @@ export const ingestSchema = {
       input: { type: "string" },
     },
     required: ["input"],
-    additionalProperties: false,
   },
 };

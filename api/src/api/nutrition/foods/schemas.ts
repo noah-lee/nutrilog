@@ -19,7 +19,6 @@ export const updateFoodLogSchema = {
       { required: ["calories"] },
       { required: ["protein"] },
     ],
-    additionalProperties: false,
   },
 };
 

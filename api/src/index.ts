@@ -7,8 +7,6 @@ const fastify = Fastify({
   ajv: {
     customOptions: {
       removeAdditional: "all",
-      coerceTypes: true,
-      useDefaults: true,
     },
   },
 });

@@ -17,7 +17,6 @@ export const updateActivityLogSchema = {
       { required: ["description"] },
       { required: ["calories"] },
     ],
-    additionalProperties: false,
   },
 };
 
