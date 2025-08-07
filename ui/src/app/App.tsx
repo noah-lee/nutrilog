@@ -1,6 +1,6 @@
 const App = () => {
   return (
-    <div className="min-h-svh max-w-vw flex flex-col">
+    <div className="min-h-svh max-w-vw flex flex-col antialiased">
       <header className="container">
         <p>HEADER</p>
       </header>
