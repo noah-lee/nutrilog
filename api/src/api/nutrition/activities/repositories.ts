@@ -2,8 +2,8 @@ import db from "@/db/config";
 import { ActivityLogInsert, ActivityLogUpdateBody } from "@/api/nutrition/activities/types";
 
 export const addActivityLogs = async (logs: ActivityLogInsert[]) => {
-  if (logs.length === 0) {
-    return [];
+  if (!logs.length) {
+    return Promise.resolve([]);
   }
   return await db
     .insertInto("activity_logs")
