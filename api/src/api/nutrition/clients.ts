@@ -1,7 +1,8 @@
 import { ActivityLogInsert } from "@/api/nutrition/activities/types";
 import { FoodLogInsert } from "@/api/nutrition/foods/types";
 import { NutritionSummary } from "@/api/nutrition/type";
-import { API_KEY, API_URL } from "@/llm/config";
+import { API_KEY, API_URL } from "@/openai/config";
+import { ApiError, ERROR_CODES } from "@/utils/errors";
 
 const SYSTEM_PROMPT = `
 You are a strict nutrition and activity tracking assistant.
@@ -59,26 +60,42 @@ export const getOpenAINutritionSummary = async (input: string) => {
 
   if (!response.ok) {
     const errorBody = await response.text();
-    throw new Error(`OpenAI API error: ${response.status} - ${errorBody}`);
+    throw new ApiError(
+      response.status === 401 ? 401 : 503,
+      `OpenAI API error: ${response.status} - ${errorBody}`,
+      ERROR_CODES.EXTERNAL_API_ERROR
+    );
   }
 
   const { choices } = await response.json();
 
   const content = choices?.[0]?.message?.content;
   if (!content) {
-    throw new Error("No content returned from OpenAI response.");
+    throw new ApiError(
+      502,
+      "No content returned from OpenAI response.",
+      ERROR_CODES.EXTERNAL_API_ERROR
+    );
   }
 
   try {
     const nutritionSummary = JSON.parse(content);
 
     if (!isNutritionSummary(nutritionSummary)) {
-      throw new Error("Invalid nutrition data format.");
+      throw new ApiError(
+        502,
+        "Invalid nutrition data format from OpenAI.",
+        ERROR_CODES.EXTERNAL_API_ERROR
+      );
     }
 
     return nutritionSummary;
   } catch (err) {
-    throw new Error("Failed to parse OpenAI JSON response.");
+    throw new ApiError(
+      502,
+      "Failed to parse OpenAI JSON response.",
+      ERROR_CODES.EXTERNAL_API_ERROR
+    );
   }
 };
 

@@ -1,14 +1,37 @@
 import { deleteFoodLog, getFoodLogs, updateFoodLog } from "@/api/nutrition/foods/repositories";
 import { FoodLogUpdateBody } from "./types";
+import { ApiError, ERROR_CODES } from "@/utils/errors";
 
 export const getFoodsService = async () => {
-  return await getFoodLogs();
+  try {
+    return await getFoodLogs();
+  } catch (error) {
+    throw new ApiError(500, 'Failed to retrieve food logs', ERROR_CODES.DATABASE_ERROR);
+  }
 }
 
 export const updateFoodLogService = async (id: number, data: FoodLogUpdateBody) => {
-  return await updateFoodLog(id, data);
+  try {
+    const result = await updateFoodLog(id, data);
+    if (!result) {
+      throw new ApiError(404, `Food log with id ${id} not found`, ERROR_CODES.NOT_FOUND);
+    }
+    return result;
+  } catch (error) {
+    if (error instanceof ApiError) throw error;
+    throw new ApiError(500, 'Failed to update food log', ERROR_CODES.DATABASE_ERROR);
+  }
 }
 
 export const deleteFoodLogService = async (id: number) => {
-  return await deleteFoodLog(id);
+  try {
+    const result = await deleteFoodLog(id);
+    if (!result) {
+      throw new ApiError(404, `Food log with id ${id} not found`, ERROR_CODES.NOT_FOUND);
+    }
+    return result;
+  } catch (error) {
+    if (error instanceof ApiError) throw error;
+    throw new ApiError(500, 'Failed to delete food log', ERROR_CODES.DATABASE_ERROR);
+  }
 }
