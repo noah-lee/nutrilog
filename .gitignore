@@ -9,3 +9,8 @@ api/.env
 # db
 db/node_modules/
 db/.env
+
+# ui
+ui/node_modules/
+ui/dist/
+ui/.env
