@@ -9,11 +9,11 @@ import {
 } from "@/api/nutrition/activities/services";
 import {
   GetActivitiesResponse,
-  ActivityLogUpdateBody,
-  ActivityLogUpdateResponse,
-  ActivityLogUpdateParams,
-  ActivityLogDeleteParams,
-  ActivityLogDeleteResponse,
+  UpdateActivityLogBody,
+  UpdateActivityLogResponse,
+  UpdateActivityLogParams,
+  DeleteActivityLogParams,
+  DeleteActivityLogResponse,
 } from "@/api/nutrition/activities/types";
 import { FastifyInstance } from "fastify";
 
@@ -24,9 +24,9 @@ const activitiesRoutes = (fastify: FastifyInstance) => {
   });
 
   fastify.patch<{
-    Params: ActivityLogUpdateParams;
-    Body: ActivityLogUpdateBody;
-    Reply: ActivityLogUpdateResponse;
+    Params: UpdateActivityLogParams;
+    Body: UpdateActivityLogBody;
+    Reply: UpdateActivityLogResponse;
   }>("/:id", { schema: updateActivityLogSchema }, async (request, reply) => {
     const id = request.params.id;
     const updatedActivityLog = await updateActivityLogService(id, request.body);
@@ -39,8 +39,8 @@ const activitiesRoutes = (fastify: FastifyInstance) => {
   });
 
   fastify.delete<{
-    Params: ActivityLogDeleteParams;
-    Reply: ActivityLogDeleteResponse;
+    Params: DeleteActivityLogParams;
+    Reply: DeleteActivityLogResponse;
   }>("/:id", { schema: deleteActivityLogSchema }, async (request, reply) => {
     const id = request.params.id;
     const deletedActivityLog = await deleteActivityLogService(id);

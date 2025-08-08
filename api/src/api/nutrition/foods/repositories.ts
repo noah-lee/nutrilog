@@ -1,5 +1,5 @@
 import db from "@/db/config";
-import { FoodLogInsert, FoodLogUpdateBody } from "@/api/nutrition/foods/types";
+import { FoodLogInsert, UpdateFoodLogBody } from "@/api/nutrition/foods/types";
 
 export const addFoodLogs = async (logs: FoodLogInsert[]) => {
   if (!logs.length) {
@@ -12,7 +12,7 @@ export const getFoodLogs = async () => {
   return await db.selectFrom("food_logs").selectAll().execute();
 };
 
-export const updateFoodLog = async (id: number, data: FoodLogUpdateBody) => {
+export const updateFoodLog = async (id: number, data: UpdateFoodLogBody) => {
   return await db
     .updateTable("food_logs")
     .set(data)

@@ -1,5 +1,5 @@
 import { deleteActivityLog, getActivityLogs, updateActivityLog } from "@/api/nutrition/activities/repositories";
-import { ActivityLogUpdateBody } from "./types";
+import { UpdateActivityLogBody } from "./types";
 import { ApiError, ERROR_CODES } from "@/utils/errors";
 
 export const getActivitiesService = async () => {
@@ -10,7 +10,7 @@ export const getActivitiesService = async () => {
   }
 };
 
-export const updateActivityLogService = async (id: number, data: ActivityLogUpdateBody) => {
+export const updateActivityLogService = async (id: number, data: UpdateActivityLogBody) => {
   try {
     const result = await updateActivityLog(id, data);
     if (!result) {

@@ -1,3 +1,5 @@
+import { FastifyError, FastifyReply } from "fastify";
+
 export class ApiError extends Error {
   constructor(
     public statusCode: number,
@@ -14,5 +16,33 @@ export const ERROR_CODES = {
   VALIDATION_ERROR: "VALIDATION_ERROR",
   EXTERNAL_API_ERROR: "EXTERNAL_API_ERROR",
   DATABASE_ERROR: "DATABASE_ERROR",
-  INTERNAL_ERROR: "INTERNAL_ERROR",
+  INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
 } as const;
+
+export const errorHandler = (error: FastifyError, reply: FastifyReply) => {
+  if (error instanceof ApiError) {
+    return reply.status(error.statusCode).send({
+      error: {
+        message: error.message,
+        code: error.code,
+      },
+    });
+  }
+
+  if (error.validation) {
+    return reply.status(400).send({
+      error: {
+        message: "Validation error",
+        code: ERROR_CODES.VALIDATION_ERROR,
+        details: error.validation,
+      },
+    });
+  }
+
+  return reply.status(500).send({
+    error: {
+      message: "Internal server error",
+      code: ERROR_CODES.INTERNAL_SERVER_ERROR,
+    },
+  });
+};

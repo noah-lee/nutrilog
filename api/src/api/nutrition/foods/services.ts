@@ -1,5 +1,5 @@
 import { deleteFoodLog, getFoodLogs, updateFoodLog } from "@/api/nutrition/foods/repositories";
-import { FoodLogUpdateBody } from "./types";
+import { UpdateFoodLogBody } from "./types";
 import { ApiError, ERROR_CODES } from "@/utils/errors";
 
 export const getFoodsService = async () => {
@@ -10,7 +10,7 @@ export const getFoodsService = async () => {
   }
 }
 
-export const updateFoodLogService = async (id: number, data: FoodLogUpdateBody) => {
+export const updateFoodLogService = async (id: number, data: UpdateFoodLogBody) => {
   try {
     const result = await updateFoodLog(id, data);
     if (!result) {

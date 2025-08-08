@@ -1,6 +1,8 @@
 import apiRoutes from "@/api/routes";
-import Fastify, { FastifyError } from "fastify";
-import { ApiError, ERROR_CODES } from "@/utils/errors";
+import Fastify from "fastify";
+import cors from "@fastify/cors";
+import { errorHandler } from "@/utils/errors";
+import { CORS_CONFIG } from "@/cors/config";
 
 const fastify = Fastify({
   logger: true,
@@ -11,34 +13,11 @@ const fastify = Fastify({
   },
 });
 
-fastify.setErrorHandler((error: FastifyError, _, reply) => {
+fastify.register(cors, CORS_CONFIG);
+
+fastify.setErrorHandler((error, _, reply) => {
   fastify.log.error(error);
-
-  if (error instanceof ApiError) {
-    return reply.status(error.statusCode).send({
-      error: {
-        message: error.message,
-        code: error.code,
-      },
-    });
-  }
-
-  if (error.validation) {
-    return reply.status(400).send({
-      error: {
-        message: "Validation error",
-        code: ERROR_CODES.VALIDATION_ERROR,
-        details: error.validation,
-      },
-    });
-  }
-
-  return reply.status(500).send({
-    error: {
-      message: 500,
-      code: ERROR_CODES.INTERNAL_ERROR,
-    },
-  });
+  errorHandler(error, reply);
 });
 
 fastify.register(apiRoutes, { prefix: "/api" });

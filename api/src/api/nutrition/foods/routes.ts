@@ -9,11 +9,11 @@ import {
 } from "@/api/nutrition/foods/services";
 import {
   GetFoodsResponse,
-  FoodLogUpdateBody,
-  FoodLogUpdateResponse,
-  FoodLogUpdateParams,
-  FoodLogDeleteParams,
-  FoodLogDeleteResponse,
+  UpdateFoodLogBody,
+  UpdateFoodLogResponse,
+  UpdateFoodLogParams,
+  DeleteFoodLogParams,
+  DeleteFoodLogResponse,
 } from "@/api/nutrition/foods/types";
 import { FastifyInstance } from "fastify";
 
@@ -24,9 +24,9 @@ const foodsRoutes = (fastify: FastifyInstance) => {
   });
 
   fastify.patch<{
-    Params: FoodLogUpdateParams;
-    Body: FoodLogUpdateBody;
-    Reply: FoodLogUpdateResponse;
+    Params: UpdateFoodLogParams;
+    Body: UpdateFoodLogBody;
+    Reply: UpdateFoodLogResponse;
   }>("/:id", { schema: updateFoodLogSchema }, async (request, reply) => {
     const id = request.params.id;
     const updatedFoodLog = await updateFoodLogService(id, request.body);
@@ -39,8 +39,8 @@ const foodsRoutes = (fastify: FastifyInstance) => {
   });
 
   fastify.delete<{
-    Params: FoodLogDeleteParams;
-    Reply: FoodLogDeleteResponse;
+    Params: DeleteFoodLogParams;
+    Reply: DeleteFoodLogResponse;
   }>("/:id", { schema: deleteFoodLogSchema }, async (request, reply) => {
     const id = request.params.id;
     const deletedFoodLog = await deleteFoodLogService(id);

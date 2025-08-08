@@ -9,13 +9,13 @@ export type FoodLogInsert = Insertable<FoodLogTable>;
 
 export type GetFoodsResponse = FoodLog[];
 
-export type FoodLogUpdateParams = { id: number };
+export type UpdateFoodLogParams = { id: number };
 
-export type FoodLogUpdateBody = Updateable<FoodLogTable>;
+export type UpdateFoodLogBody = Updateable<FoodLogTable>;
 
-export type FoodLogUpdateResponse = FoodLog | string;
+export type UpdateFoodLogResponse = FoodLog | string;
 
-export type FoodLogDeleteParams = { id: number };
+export type DeleteFoodLogParams = { id: number };
 
-export type FoodLogDeleteResponse = FoodLog | string;
+export type DeleteFoodLogResponse = FoodLog | string;
 

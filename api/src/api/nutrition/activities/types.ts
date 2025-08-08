@@ -9,12 +9,12 @@ export type ActivityLogInsert = Insertable<ActivityLogTable>;
 
 export type GetActivitiesResponse = ActivityLog[];
 
-export type ActivityLogUpdateParams = { id: number };
+export type UpdateActivityLogParams = { id: number };
 
-export type ActivityLogUpdateBody = Updateable<ActivityLogTable>;
+export type UpdateActivityLogBody = Updateable<ActivityLogTable>;
 
-export type ActivityLogUpdateResponse = ActivityLog | string;
+export type UpdateActivityLogResponse = ActivityLog | string;
 
-export type ActivityLogDeleteParams = { id: number };
+export type DeleteActivityLogParams = { id: number };
 
-export type ActivityLogDeleteResponse = ActivityLog | string;
+export type DeleteActivityLogResponse = ActivityLog | string;
