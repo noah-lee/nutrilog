@@ -11,10 +11,12 @@ const App = () => {
   return (
     <div className="min-h-svh max-w-vw flex flex-col antialiased">
       <header className="container"></header>
-      <main className="container flex-1 flex flex-col items-center justify-center gap-8">
+      <main className="container flex-1 flex flex-col items-center justify-center gap-4">
         <NutritionInput />
-        <FoodTable logs={foodLogs} />
-        <ActivityTable logs={activityLogs} />
+        <div className="flex gap-4 flex-wrap">
+          <FoodTable logs={foodLogs} />
+          <ActivityTable logs={activityLogs} />
+        </div>
       </main>
       <footer className="container"></footer>
     </div>

@@ -9,6 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/Table";
+import { DumbbellIcon, FlameIcon } from "lucide-react";
 import type { FC } from "react";
 
 interface Props {
@@ -19,21 +20,34 @@ const ActivityTable: FC<Props> = ({ logs }) => {
   const isLoading = !logs;
 
   return (
-    <div className="h-[240px] w-full flex flex-col border rounded-xl">
+    <div className="h-[240px] min-w-[240px] flex-1 flex flex-col border rounded-xl">
       <Table className="border-collapse table-fixed">
         <TableHeader className="sticky top-0 z-10 bg-secondary ">
           <TableRow>
-            <TableHead className="w-[75%] rounded-tl-xl">Description</TableHead>
-            <TableHead className="w-[25%] rounded-tr-xl">Calories</TableHead>
+            <TableHead className="w-[75%] rounded-tl-xl">
+              <div className="flex gap-2 items-center">
+                <DumbbellIcon size={16} className="shrink-0" />
+                <p className="invisible lg:visible">Activity</p>
+              </div>
+            </TableHead>
+            <TableHead className="w-[25%] rounded-tr-xl">
+              <div className="flex gap-2 items-center">
+                <FlameIcon size={16} className="shrink-0" />
+                <p className="invisible lg:visible">Calories</p>
+              </div>
+            </TableHead>
           </TableRow>
         </TableHeader>
       </Table>
-      <div className="flex-grow overflow-y-auto">
+      <div className="flex-grow overflow-y-auto scrollbar-hidden">
         <Table className="border-collapse table-fixed">
           <TableBody>
             {isLoading
               ? new Array(10).fill(null).map((_, index) => (
-                  <TableRow key={`skeleton-${index}`} className="border-0 hover:bg-transparent">
+                  <TableRow
+                    key={`skeleton-${index}`}
+                    className="border-0 hover:bg-transparent"
+                  >
                     <TableCell colSpan={3}>
                       <Skeleton className="h-8" />
                     </TableCell>
