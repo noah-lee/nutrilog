@@ -24,7 +24,10 @@ export const useGetActivityLogs = (
 
 export const useUpdateActivityLog = (
   client: QueryClient,
-  options?: UseTypedMutationOptions<UpdateActivityLogResponse, UpdateActivityLogRequest>
+  options?: UseTypedMutationOptions<
+    UpdateActivityLogResponse,
+    UpdateActivityLogRequest
+  >
 ) => {
   return useMutation({
     mutationFn: ({ params, data }) =>
@@ -32,25 +35,30 @@ export const useUpdateActivityLog = (
         method: "PATCH",
         data,
       }),
-    onSuccess: () => {
+    ...options,
+    onSuccess: (...args) => {
+      options?.onSuccess?.(...args);
       client.invalidateQueries({ queryKey: ["activityLogs"] });
     },
-    ...options,
   });
 };
 
 export const useDeleteActivityLog = (
   client: QueryClient,
-  options?: UseTypedMutationOptions<DeleteActivityLogResponse, DeleteActivityLogRequest>
+  options?: UseTypedMutationOptions<
+    DeleteActivityLogResponse,
+    DeleteActivityLogRequest
+  >
 ) => {
   return useMutation({
     mutationFn: ({ params }) =>
       api<DeleteActivityLogResponse>(`/nutrition/activities/${params.id}`, {
         method: "DELETE",
       }),
-    onSuccess: () => {
+    ...options,
+    onSuccess: (...args) => {
+      options?.onSuccess?.(...args);
       client.invalidateQueries({ queryKey: ["activityLogs"] });
     },
-    ...options,
   });
 };

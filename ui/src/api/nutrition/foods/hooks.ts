@@ -32,10 +32,11 @@ export const useUpdateFoodLog = (
         method: "PATCH",
         data,
       }),
-    onSuccess: () => {
-      client.invalidateQueries({ queryKey: ["foodLogs"] });
-    },
     ...options,
+    onSuccess: (...args) => {
+      client.invalidateQueries({ queryKey: ["foodLogs"] });
+      options?.onSuccess?.(...args);
+    },
   });
 };
 
@@ -48,9 +49,10 @@ export const useDeleteFoodLog = (
       api<DeleteFoodLogResponse>(`/nutrition/foods/${params.id}`, {
         method: "DELETE",
       }),
-    onSuccess: () => {
+    ...options,
+    onSuccess: (...args) => {
+      options?.onSuccess?.(...args);
       client.invalidateQueries({ queryKey: ["foodLogs"] });
     },
-    ...options,
   });
 };

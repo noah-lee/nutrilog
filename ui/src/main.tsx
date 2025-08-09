@@ -7,8 +7,8 @@ import { ThemeProvider } from "@/providers/ThemeProvider.tsx";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5, // Data is considered fresh for 5 minutes
-      retry: 1,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
     },
   },
 });
