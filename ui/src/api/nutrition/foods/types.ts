@@ -4,7 +4,7 @@ export type FoodLog = {
   calories: number;
   protein: number;
   embedding: string | null;
-  created_at: Date;
+  created_at: string;
 };
 
 export type GetFoodLogsResponse = FoodLog[];

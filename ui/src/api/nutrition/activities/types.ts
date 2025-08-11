@@ -3,7 +3,7 @@ export type ActivityLog = {
   description: string;
   calories: number;
   embedding: string | null;
-  created_at: Date;
+  created_at: string;
 };
 
 export type GetActivityLogsResponse = ActivityLog[];

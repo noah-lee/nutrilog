@@ -3,7 +3,7 @@ import { Button } from "@/components/Button";
 import { Textarea } from "@/components/Textarea";
 import { useIngestNutrition } from "@/api/nutrition/hooks";
 import { useQueryClient } from "@tanstack/react-query";
-import { PlusIcon } from "lucide-react";
+import { ArrowUpIcon } from "lucide-react";
 
 const NutritionInput = () => {
   const client = useQueryClient();
@@ -41,7 +41,7 @@ const NutritionInput = () => {
         className="absolute right-4 top-1/2 -translate-y-1/2 rounded-3xl"
         size="icon"
       >
-        <PlusIcon />
+        <ArrowUpIcon />
       </Button>
     </div>
   );

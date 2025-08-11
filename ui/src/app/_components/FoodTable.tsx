@@ -20,26 +20,26 @@ const FoodTable: FC<Props> = ({ logs }) => {
   const isLoading = !logs;
 
   return (
-    <div className="h-[240px] min-w-[240px] flex-1 flex flex-col border rounded-xl">
+    <div className="@container h-[240px] min-w-[240px] flex-1 flex flex-col border rounded-xl">
       <Table className="border-collapse table-fixed">
         <TableHeader className="sticky top-0 z-10 bg-secondary">
           <TableRow>
             <TableHead className="w-[50%] rounded-tl-xl">
               <div className="flex gap-2 items-center">
                 <UtensilsIcon size={16} className="shrink-0" />
-                <p className="invisible lg:visible">Food</p>
+                <p className="invisible @sm:visible">Food</p>
               </div>
             </TableHead>
             <TableHead className="w-[25%]">
               <div className="flex gap-2 items-center">
                 <BeefIcon size={16} className="shrink-0" />
-                <p className="invisible lg:visible">Protein</p>
+                <p className="invisible @sm:visible">Protein</p>
               </div>
             </TableHead>
             <TableHead className="w-[25%] rounded-tr-xl">
               <div className="flex gap-2 items-center">
                 <ZapIcon size={16} className="shrink-0" />
-                <p className="invisible lg:visible">Calories</p>
+                <p className="invisible @sm:visible">Calories</p>
               </div>
             </TableHead>
           </TableRow>
@@ -49,7 +49,7 @@ const FoodTable: FC<Props> = ({ logs }) => {
         <Table className="border-collapse table-fixed">
           <TableBody>
             {isLoading
-              ? new Array(10).fill(null).map((_, index) => (
+              ? new Array(2).fill(null).map((_, index) => (
                   <TableRow
                     key={`skeleton-${index}`}
                     className="border-0 hover:bg-transparent"

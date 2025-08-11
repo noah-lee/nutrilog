@@ -3,6 +3,7 @@ import { useGetFoodLogs } from "@/api/nutrition/foods/hooks";
 import ActivityTable from "@/app/_components/ActivityTable";
 import FoodTable from "@/app/_components/FoodTable";
 import NutritionInput from "@/app/_components/NutritionInput";
+import SummaryCard from "@/app/_components/SummaryCard";
 
 const App = () => {
   const { data: foodLogs } = useGetFoodLogs();
@@ -12,8 +13,9 @@ const App = () => {
     <div className="min-h-svh max-w-vw flex flex-col antialiased">
       <header className="container"></header>
       <main className="container flex-1 flex flex-col items-center justify-center gap-4">
+        <SummaryCard />
         <NutritionInput />
-        <div className="flex gap-4 flex-wrap">
+        <div className="flex gap-4 flex-wrap w-full">
           <FoodTable logs={foodLogs} />
           <ActivityTable logs={activityLogs} />
         </div>
