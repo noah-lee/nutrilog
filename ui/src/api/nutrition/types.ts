@@ -9,8 +9,15 @@ export type NutritionSummary = {
 
 export type IngestResponse = NutritionSummary;
 
+export type Biometrics = {
+  sex: "male" | "female" | "other";
+  age: number;
+  weight: number;
+  height: number;
+};
+
 export type IngestRequest = {
-  data: { input: string };
+  data: { prompt: string; biometrics: Biometrics };
 };
 
 export type StartEndQueries = {

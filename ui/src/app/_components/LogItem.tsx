@@ -54,6 +54,7 @@ const LogItem: FC<Props> = ({ log }) => {
     useUpdateFoodLog(client, {
       onSuccess: () => {
         handleReset();
+        setOpen(false);
       },
     });
 
@@ -61,6 +62,7 @@ const LogItem: FC<Props> = ({ log }) => {
     useUpdateActivityLog(client, {
       onSuccess: () => {
         handleReset();
+        setOpen(false);
       },
     });
 
@@ -68,6 +70,7 @@ const LogItem: FC<Props> = ({ log }) => {
     useDeleteFoodLog(client, {
       onSuccess: () => {
         handleReset();
+        setOpen(false);
       },
     });
 
@@ -75,6 +78,7 @@ const LogItem: FC<Props> = ({ log }) => {
     useDeleteActivityLog(client, {
       onSuccess: () => {
         handleReset();
+        setOpen(false);
       },
     });
 

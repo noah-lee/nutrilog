@@ -1,47 +1,48 @@
 import { ActivityLogInsert } from "@/api/nutrition/activities/types";
 import { FoodLogInsert } from "@/api/nutrition/foods/types";
-import { NutritionSummary } from "@/api/nutrition/type";
+import { Biometrics, NutritionSummary } from "@/api/nutrition/type";
 import { API_KEY, API_URL } from "@/openai/config";
 import { ApiError, ERROR_CODES } from "@/utils/errors";
 
-const SYSTEM_PROMPT = `
-You are a strict nutrition and activity tracking assistant.
+const SYSTEM_BASE_PROMPT = `
+You are a strict nutrition and activity tracking assistant. User biometrics are in metric units (kg, cm).
 
 Given plain English input, return only:
 
-1. "foods": array of food objects with:
-  - "description": normalized label (fix spelling, match past context if similar), including food type and quantity
-  - "calories": numeric, user-provided or conservative estimate (round up)
-  - "protein": numeric grams, user-provided or conservative estimate (round down)
+1. For both "foods" and "activities":
+  - "description": normalized label (fix spelling, match past context if similar), keep it concise and consistent formatting
+  - "calories": numeric, user-provided or conservative estimate (round up for foods, round down for activities)
 
-2. "activities": array of activity objects with:
-  - "description": normalized label, including exercise type and duration
-  - "calories": numeric, user-provided or conservative estimate (round down)
+2. For "foods" only:
+  - "protein": numeric grams, user-provided or conservative estimate (round down)
 
 3. "feedback": 1–2 helpful, encouraging sentences.
   - If it's the first log of the day, give a positive welcome.
   - If prior entries (provided in context), summarize food and activity progress.
   - Only mention calories and protein (not weight, diet plans, or goals beyond those).
 
-⚠️ If the user says anything unrelated (e.g. jokes, weather, chat), respond only with:
+⚠️ If the user says anything unrelated (e.g. jokes, weather, chat), respond with empty foods and activities list, and feedback as:
 "Sorry! I can only help with tracking food and activity for calories and protein."
 
-Return only this strict JSON:
+‼️ Return only this strict JSON:
 {
   "foods": [...],
   "activities": [...],
   "feedback": "..."
 }
-No extra commentary or formatting.
 `;
 
 const MODEL = "gpt-4.1-nano";
 const MAX_TOKENS = 1000;
 
-export const getOpenAINutritionSummary = async (input: string) => {
+export const getOpenAINutritionSummary = async (
+  prompt: string,
+  biometrics: Biometrics
+) => {
   const messages = [
-    { role: "system", content: SYSTEM_PROMPT },
-    { role: "user", content: input },
+    { role: "system", content: SYSTEM_BASE_PROMPT.concat() },
+    { role: "user", content: JSON.stringify(biometrics) },
+    { role: "user", content: prompt },
   ];
 
   const response = await fetch(API_URL, {
@@ -79,6 +80,7 @@ export const getOpenAINutritionSummary = async (input: string) => {
   }
 
   try {
+    console.log("content", content);
     const nutritionSummary = JSON.parse(content);
 
     if (!isNutritionSummary(nutritionSummary)) {

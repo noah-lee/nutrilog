@@ -3,9 +3,19 @@ export const ingestSchema = {
   body: {
     type: "object",
     properties: {
-      input: { type: "string" },
+      prompt: { type: "string" },
+      biometrics: {
+        type: "object",
+        properties: {
+          sex: { type: "string", enum: ["male", "female", "other"] },
+          age: { type: "number" },
+          weight: { type: "number" },
+          height: { type: "number" },
+        },
+        required: ["sex", "age", "weight", "height"],
+      },
     },
-    required: ["input"],
+    required: ["prompt", "biometrics"],
   },
 };
 

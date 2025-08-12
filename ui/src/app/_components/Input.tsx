@@ -9,10 +9,12 @@ const Input = () => {
   const client = useQueryClient();
 
   const [input, setInput] = useState("");
+  const [feedback, setFeedback] = useState("");
 
   const { mutate, isPending } = useIngestNutrition(client, {
-    onSuccess: () => {
+    onSuccess: (data) => {
       setInput("");
+      setFeedback(data.feedback);
     },
   });
 
@@ -21,17 +23,31 @@ const Input = () => {
   };
 
   const handleAddClick = () => {
-    mutate({ data: { input } });
+    if (!input.trim()) return;
+    mutate({
+      data: {
+        prompt: input,
+        biometrics: { sex: "male", age: 33, weight: 65, height: 165 },
+      },
+    });
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      handleAddClick();
+    }
   };
 
   return (
-    <div className="grid flex-1 gap-2 relative min-w-[280px]">
+    <div className="flex flex-col flex-1 gap-2 relative min-w-[280px]">
       <Textarea
         id="user-input"
         rows={3}
-        className="resize-none field-sizing-fixed pr-16"
+        className="grow resize-none field-sizing-fixed pr-16"
         value={input}
         onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
         disabled={isPending}
         placeholder="Tell me what you ate or how you moved today — e.g., 'protein shake' or '30 min walk'"
       />
@@ -43,6 +59,9 @@ const Input = () => {
       >
         <ArrowUpIcon />
       </Button>
+      <div className="p-2">
+        <p className="text-sm font-semibold">{feedback}</p>
+      </div>
     </div>
   );
 };

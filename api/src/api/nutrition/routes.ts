@@ -10,8 +10,8 @@ const nutritionRoutes = (fastify: FastifyInstance) => {
     "/ingest",
     { schema: ingestSchema },
     async (request, reply) => {
-      const input = request.body.input;
-      const result = await ingestService(input);
+      const { prompt, biometrics } = request.body;
+      const result = await ingestService(prompt,  biometrics);
       return reply.status(200).send(result);
     }
   );
