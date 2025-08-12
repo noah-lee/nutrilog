@@ -2,9 +2,9 @@ import { deleteActivityLog, getActivityLogs, updateActivityLog } from "@/api/nut
 import { UpdateActivityLogBody } from "./types";
 import { ApiError, ERROR_CODES } from "@/utils/errors";
 
-export const getActivitiesService = async () => {
+export const getActivitiesService = async (startDate?: Date, endDate?: Date) => {
   try {
-    return await getActivityLogs();
+    return await getActivityLogs(startDate, endDate);
   } catch (error) {
     throw new ApiError(500, 'Failed to retrieve activity logs', ERROR_CODES.DATABASE_ERROR);
   }

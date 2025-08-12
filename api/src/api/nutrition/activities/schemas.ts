@@ -1,3 +1,10 @@
+import { startEndQueryStringSchema } from "@/api/nutrition/schemas";
+
+export const getActivityLogsSchema = {
+  $schema: "https://json-schema.org/draft/2020-12/schema",
+  querystring: startEndQueryStringSchema,
+};
+
 export const updateActivityLogSchema = {
   $schema: "https://json-schema.org/draft/2020-12/schema",
   params: {
@@ -13,10 +20,7 @@ export const updateActivityLogSchema = {
       description: { type: "string" },
       calories: { type: "number" },
     },
-    anyOf: [
-      { required: ["description"] },
-      { required: ["calories"] },
-    ],
+    anyOf: [{ required: ["description"] }, { required: ["calories"] }],
   },
 };
 

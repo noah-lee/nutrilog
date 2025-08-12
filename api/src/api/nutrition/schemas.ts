@@ -8,3 +8,12 @@ export const ingestSchema = {
     required: ["input"],
   },
 };
+
+export const startEndQueryStringSchema = {
+  type: "object",
+  properties: {
+    start: { type: "string", format: "date-time" },
+    end: { type: "string", format: "date-time" },
+  },
+  required: [],
+};

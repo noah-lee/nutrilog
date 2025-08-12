@@ -1,5 +1,6 @@
 import {
   deleteActivityLogSchema,
+  getActivityLogsSchema,
   updateActivityLogSchema,
 } from "@/api/nutrition/activities/schemas";
 import {
@@ -14,12 +15,21 @@ import {
   UpdateActivityLogParams,
   DeleteActivityLogParams,
   DeleteActivityLogResponse,
+  GetActivityQueries,
 } from "@/api/nutrition/activities/types";
 import { FastifyInstance } from "fastify";
 
 const activitiesRoutes = (fastify: FastifyInstance) => {
-  fastify.get<{ Reply: GetActivitiesResponse }>("/", async (_, reply) => {
-    const activityLogs = await getActivitiesService();
+  fastify.get<{
+    Reply: GetActivitiesResponse;
+    Querystring: GetActivityQueries;
+  }>("/", { schema: getActivityLogsSchema }, async (request, reply) => {
+    const { start, end } = request.query;
+
+    const startDate = start ? new Date(start) : undefined;
+    const endDate = end ? new Date(end) : undefined;
+
+    const activityLogs = await getActivitiesService(startDate, endDate);
     return reply.status(200).send(activityLogs);
   });
 

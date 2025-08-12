@@ -8,8 +8,18 @@ export const addFoodLogs = async (logs: FoodLogInsert[]) => {
   return await db.insertInto("food_logs").values(logs).returningAll().execute();
 };
 
-export const getFoodLogs = async () => {
-  return await db.selectFrom("food_logs").selectAll().execute();
+export const getFoodLogs = async (startDate?: Date, endDate?: Date) => {
+  let query = db.selectFrom("food_logs").selectAll();
+
+  if (startDate) {
+    query = query.where("created_at", ">=", startDate);
+  }
+
+  if (endDate) {
+    query = query.where("created_at", "<=", endDate);
+  }
+
+  return await query.execute();
 };
 
 export const updateFoodLog = async (id: number, data: UpdateFoodLogBody) => {

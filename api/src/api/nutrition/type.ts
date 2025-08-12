@@ -12,3 +12,5 @@ export type IngestRequest = {
 };
 
 export type IngestResponse = NutritionSummary;
+
+export type StartEndQueries = { start?: string; end?: string }

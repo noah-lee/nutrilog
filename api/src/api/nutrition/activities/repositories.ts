@@ -1,5 +1,8 @@
 import db from "@/db/config";
-import { ActivityLogInsert, UpdateActivityLogBody } from "@/api/nutrition/activities/types";
+import {
+  ActivityLogInsert,
+  UpdateActivityLogBody,
+} from "@/api/nutrition/activities/types";
 
 export const addActivityLogs = async (logs: ActivityLogInsert[]) => {
   if (!logs.length) {
@@ -12,11 +15,24 @@ export const addActivityLogs = async (logs: ActivityLogInsert[]) => {
     .execute();
 };
 
-export const getActivityLogs = async () => {
-  return await db.selectFrom("activity_logs").selectAll().execute();
+export const getActivityLogs = async (startDate?: Date, endDate?: Date) => {
+  let query = db.selectFrom("activity_logs").selectAll();
+
+  if (startDate) {
+    query = query.where("created_at", ">=", startDate);
+  }
+
+  if (endDate) {
+    query = query.where("created_at", "<=", endDate);
+  }
+
+  return await query.execute();
 };
 
-export const updateActivityLog = async (id: number, data: UpdateActivityLogBody) => {
+export const updateActivityLog = async (
+  id: number,
+  data: UpdateActivityLogBody
+) => {
   return await db
     .updateTable("activity_logs")
     .set(data)

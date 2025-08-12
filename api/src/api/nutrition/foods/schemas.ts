@@ -1,3 +1,10 @@
+import { startEndQueryStringSchema } from "@/api/nutrition/schemas";
+
+export const getFoodLogsSchema = {
+  $schema: "https://json-schema.org/draft/2020-12/schema",
+  querystring: startEndQueryStringSchema,
+};
+
 export const updateFoodLogSchema = {
   $schema: "https://json-schema.org/draft/2020-12/schema",
   params: {
@@ -31,5 +38,4 @@ export const deleteFoodLogSchema = {
     },
     required: ["id"],
   },
-
 };

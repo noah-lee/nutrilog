@@ -1,5 +1,6 @@
 import {
   deleteFoodLogSchema,
+  getFoodLogsSchema,
   updateFoodLogSchema,
 } from "@/api/nutrition/foods/schemas";
 import {
@@ -14,14 +15,24 @@ import {
   UpdateFoodLogParams,
   DeleteFoodLogParams,
   DeleteFoodLogResponse,
+  GetFoodQueries,
 } from "@/api/nutrition/foods/types";
 import { FastifyInstance } from "fastify";
 
 const foodsRoutes = (fastify: FastifyInstance) => {
-  fastify.get<{ Reply: GetFoodsResponse }>("/", async (_, reply) => {
-    const foodLogs = await getFoodsService();
-    return reply.status(200).send(foodLogs);
-  });
+  fastify.get<{ Reply: GetFoodsResponse; Querystring: GetFoodQueries }>(
+    "/",
+    { schema: getFoodLogsSchema },
+    async (request, reply) => {
+      const { start, end } = request.query;
+
+      const startDate = start ? new Date(start) : undefined;
+      const endDate = end ? new Date(end) : undefined;
+
+      const foodLogs = await getFoodsService(startDate, endDate);
+      return reply.status(200).send(foodLogs);
+    }
+  );
 
   fastify.patch<{
     Params: UpdateFoodLogParams;

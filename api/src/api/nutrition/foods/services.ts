@@ -2,9 +2,9 @@ import { deleteFoodLog, getFoodLogs, updateFoodLog } from "@/api/nutrition/foods
 import { UpdateFoodLogBody } from "./types";
 import { ApiError, ERROR_CODES } from "@/utils/errors";
 
-export const getFoodsService = async () => {
+export const getFoodsService = async (startDate?: Date, endDate?: Date) => {
   try {
-    return await getFoodLogs();
+    return await getFoodLogs(startDate, endDate);
   } catch (error) {
     throw new ApiError(500, 'Failed to retrieve food logs', ERROR_CODES.DATABASE_ERROR);
   }
