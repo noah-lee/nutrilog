@@ -41,7 +41,7 @@ const SummaryCard = () => {
   const proteinOffset = proteinTarget - proteinTotal;
 
   return (
-    <Card className="p-4 w-[280px]">
+    <Card className="p-4 w-full max-w-[320px]">
       {isLoading ? (
         <Skeleton className="w-full h-[166px]" />
       ) : (

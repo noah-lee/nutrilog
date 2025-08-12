@@ -5,7 +5,7 @@ import { useIngestNutrition } from "@/api/nutrition/hooks";
 import { useQueryClient } from "@tanstack/react-query";
 import { ArrowUpIcon } from "lucide-react";
 
-const NutritionInput = () => {
+const Input = () => {
   const client = useQueryClient();
 
   const [input, setInput] = useState("");
@@ -47,4 +47,4 @@ const NutritionInput = () => {
   );
 };
 
-export default NutritionInput;
+export default Input;
