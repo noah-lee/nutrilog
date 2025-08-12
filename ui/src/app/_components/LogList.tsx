@@ -30,7 +30,7 @@ const LogList = () => {
                 <Skeleton className="w-full h-[47px]" />
               </div>
             ))
-        : logs.map((log) => <LogItem log={log} />)}
+        : logs.map((log, index) => <LogItem key={`log-${index}`} log={log} />)}
     </div>
   );
 };

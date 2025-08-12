@@ -5,13 +5,13 @@ import SummaryCard from "@/app/_components/SummaryCard";
 const App = () => {
   return (
     <div className="min-h-svh max-w-vw flex flex-col antialiased">
-      <header className="container"></header>
-      <main className="container flex-1 flex flex-col items-center justify-center gap-4">
+      <header className="container h-8"></header>
+      <main className="container flex-1 flex flex-col items-center gap-4">
         <SummaryCard />
         <Input />
         <LogList />
       </main>
-      <footer className="container"></footer>
+      <footer className="container h-8"></footer>
     </div>
   );
 };

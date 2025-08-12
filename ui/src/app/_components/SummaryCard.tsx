@@ -4,10 +4,14 @@ import { Badge } from "@/components/Badge";
 import { Card } from "@/components/Card";
 import { Progress } from "@/components/Progress";
 import { Skeleton } from "@/components/Skeleton";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { cn } from "@/utils/styles";
 import { BeefIcon, DumbbellIcon, UtensilsIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 
 const SummaryCard = () => {
+  const isMobile = useIsMobile();
+
   const [calorieTarget, setCalorieTarget] = useState(1500);
   const [proteinTarget, setProteinTarget] = useState(100);
 
@@ -41,7 +45,9 @@ const SummaryCard = () => {
   const proteinOffset = proteinTarget - proteinTotal;
 
   return (
-    <Card className="p-4 w-full max-w-[320px]">
+    <Card
+      className={cn("p-4 w-full max-w-[320px] ", !isMobile && "self-start")}
+    >
       {isLoading ? (
         <Skeleton className="w-full h-[166px]" />
       ) : (
@@ -53,7 +59,7 @@ const SummaryCard = () => {
               <p className="text-muted-foreground self-end">/{calorieTarget}</p>
             </div>
           </div>
-          <Progress value={(total / calorieTarget) * 100} className="h-3"/>
+          <Progress value={(total / calorieTarget) * 100} className="h-3" />
           <div className="flex gap-2 flex-wrap">
             <Badge className="rounded-xl">
               <UtensilsIcon size={8} className="shrink-0" />+{foodTotal} cal
