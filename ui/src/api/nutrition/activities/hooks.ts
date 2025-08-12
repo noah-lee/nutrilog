@@ -2,6 +2,7 @@ import { api } from "@/api/axios";
 import type {
   DeleteActivityLogRequest,
   DeleteActivityLogResponse,
+  GetActivityLogsQueries,
   GetActivityLogsResponse,
   UpdateActivityLogRequest,
   UpdateActivityLogResponse,
@@ -13,11 +14,13 @@ import type {
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 
 export const useGetActivityLogs = (
+  params?: GetActivityLogsQueries,
   options?: UseTypedQueryOptions<GetActivityLogsResponse>
 ) => {
   return useQuery({
-    queryKey: ["activityLogs"],
-    queryFn: () => api<GetActivityLogsResponse>("/nutrition/activities"),
+    queryKey: ["activityLogs", params],
+    queryFn: () =>
+      api<GetActivityLogsResponse>("/nutrition/activities", { params }),
     ...options,
   });
 };

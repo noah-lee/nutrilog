@@ -5,6 +5,7 @@ import { Card } from "@/components/Card";
 import { Progress } from "@/components/Progress";
 import { Skeleton } from "@/components/Skeleton";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { formatISODateTime, getEndDate, getStartDate } from "@/utils/dates";
 import { cn } from "@/utils/styles";
 import { BeefIcon, DumbbellIcon, UtensilsIcon } from "lucide-react";
 import { useMemo, useState } from "react";
@@ -12,12 +13,18 @@ import { useMemo, useState } from "react";
 const SummaryCard = () => {
   const isMobile = useIsMobile();
 
+  const queries = {
+    start: formatISODateTime(getStartDate()),
+    end: formatISODateTime(getEndDate()),
+  };
+
   const [calorieTarget, setCalorieTarget] = useState(1500);
   const [proteinTarget, setProteinTarget] = useState(100);
 
-  const { data: foodLogs, isLoading: isLoadingFoodLogs } = useGetFoodLogs();
+  const { data: foodLogs, isLoading: isLoadingFoodLogs } =
+    useGetFoodLogs(queries);
   const { data: activityLogs, isLoading: isLoadingActivityLogs } =
-    useGetActivityLogs();
+    useGetActivityLogs(queries);
 
   const isLoading = isLoadingFoodLogs || isLoadingActivityLogs;
 

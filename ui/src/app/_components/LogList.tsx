@@ -4,11 +4,18 @@ import LogItem from "@/app/_components/LogItem";
 import { useMemo } from "react";
 import type { Log } from "@/app/App.types";
 import { Skeleton } from "@/components/Skeleton";
+import { formatISODateTime, getEndDate, getStartDate } from "@/utils/dates";
 
 const LogList = () => {
-  const { data: foodLogs, isLoading: isLoadingFoodLogs } = useGetFoodLogs();
+  const queries = {
+    start: formatISODateTime(getStartDate()),
+    end: formatISODateTime(getEndDate()),
+  };
+
+  const { data: foodLogs, isLoading: isLoadingFoodLogs } =
+    useGetFoodLogs(queries);
   const { data: activityLogs, isLoading: isLoadingActivityLogs } =
-    useGetActivityLogs();
+    useGetActivityLogs(queries);
 
   const isLoading = isLoadingFoodLogs || isLoadingActivityLogs;
 

@@ -2,6 +2,7 @@ import { api } from "@/api/axios";
 import type {
   DeleteFoodLogRequest,
   DeleteFoodLogResponse,
+  GetFoodLogsQueries,
   GetFoodLogsResponse,
   UpdateFoodLogRequest,
   UpdateFoodLogResponse,
@@ -13,11 +14,12 @@ import type {
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 
 export const useGetFoodLogs = (
+  params?: GetFoodLogsQueries,
   options?: UseTypedQueryOptions<GetFoodLogsResponse>
 ) => {
   return useQuery({
-    queryKey: ["foodLogs"],
-    queryFn: () => api<GetFoodLogsResponse>("/nutrition/foods"),
+    queryKey: ["foodLogs", params],
+    queryFn: () => api<GetFoodLogsResponse>("/nutrition/foods", { params }),
     ...options,
   });
 };

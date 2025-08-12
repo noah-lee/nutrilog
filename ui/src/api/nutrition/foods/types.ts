@@ -1,3 +1,5 @@
+import type { StartEndQueries } from "@/api/nutrition/types";
+
 export type FoodLog = {
   id: number;
   description: string;
@@ -6,6 +8,8 @@ export type FoodLog = {
   embedding: string | null;
   created_at: string;
 };
+
+export type GetFoodLogsQueries = StartEndQueries;
 
 export type GetFoodLogsResponse = FoodLog[];
 
