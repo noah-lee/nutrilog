@@ -53,7 +53,7 @@ const SummaryCard = () => {
 
   return (
     <Card
-      className={cn("p-4 w-full max-w-[320px] ", !isMobile && "self-start")}
+      className={cn("flex-1 p-4 w-full min-w-[280px]", !isMobile && "self-start")}
     >
       {isLoading ? (
         <Skeleton className="w-full h-[166px]" />
