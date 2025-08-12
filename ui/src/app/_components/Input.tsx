@@ -25,7 +25,7 @@ const Input = () => {
   };
 
   return (
-    <div className="grid w-full gap-2 relative">
+    <div className="grid flex-1 gap-2 relative min-w-[280px]">
       <Textarea
         id="user-input"
         rows={3}
