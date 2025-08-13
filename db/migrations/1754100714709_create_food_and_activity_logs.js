@@ -16,7 +16,6 @@ export const up = (pgm) => {
     description: { type: "text", notNull: true },
     calories: { type: "integer", notNull: true },
     protein: { type: "integer", notNull: true },
-    embedding: { type: "vector(1536)", notNull: false },
     created_at: {
       type: "timestamptz",
       notNull: true,
@@ -28,7 +27,6 @@ export const up = (pgm) => {
     id: { type: "serial", primaryKey: true },
     description: { type: "text", notNull: true },
     calories: { type: "integer", notNull: true },
-    embedding: { type: "vector(1536)", notNull: false },
     created_at: {
       type: "timestamptz",
       notNull: true,
