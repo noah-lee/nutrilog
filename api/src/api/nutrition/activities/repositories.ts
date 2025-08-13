@@ -4,7 +4,7 @@ import {
   UpdateActivityLogBody,
 } from "@/api/nutrition/activities/types";
 
-export const addActivityLogs = async (logs: ActivityLogInsert[]) => {
+export const insertActivityLogs = async (logs: ActivityLogInsert[]) => {
   if (!logs.length) {
     return Promise.resolve([]);
   }

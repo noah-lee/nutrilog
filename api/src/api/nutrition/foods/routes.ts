@@ -5,7 +5,7 @@ import {
 } from "@/api/nutrition/foods/schemas";
 import {
   deleteFoodLogService,
-  getFoodsService,
+  getFoodLogsService,
   updateFoodLogService,
 } from "@/api/nutrition/foods/services";
 import {
@@ -29,7 +29,7 @@ const foodsRoutes = (fastify: FastifyInstance) => {
       const startDate = start ? new Date(start) : undefined;
       const endDate = end ? new Date(end) : undefined;
 
-      const foodLogs = await getFoodsService(startDate, endDate);
+      const foodLogs = await getFoodLogsService(startDate, endDate);
       return reply.status(200).send(foodLogs);
     }
   );

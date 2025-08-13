@@ -14,6 +14,8 @@ export const ingestSchema = {
         },
         required: ["sex", "age", "weight", "height"],
       },
+      start: { type: "string", format: "date-time" },
+      end: { type: "string", format: "date-time" },
     },
     required: ["prompt", "biometrics"],
   },

@@ -17,7 +17,7 @@ export type Biometrics = {
 };
 
 export type IngestRequest = {
-  data: { prompt: string; biometrics: Biometrics };
+  data: { prompt: string; biometrics: Biometrics, start?: string, end?:string };
 };
 
 export type StartEndQueries = {

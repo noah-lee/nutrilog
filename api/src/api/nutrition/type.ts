@@ -17,6 +17,8 @@ export type Biometrics = {
 export type IngestRequest = {
   prompt: string;
   biometrics: Biometrics;
+  start?: string;
+  end?: string;
 };
 
 export type IngestResponse = NutritionSummary;

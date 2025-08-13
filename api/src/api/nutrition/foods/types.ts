@@ -8,6 +8,8 @@ export type FoodLog = Selectable<FoodLogTable>;
 
 export type FoodLogInsert = Insertable<FoodLogTable>;
 
+export type InsertFoodLogBody = FoodLogInsert;
+
 export type GetFoodQueries = StartEndQueries;
 
 export type GetFoodsResponse = FoodLog[];

@@ -1,7 +1,7 @@
 import db from "@/db/config";
 import { FoodLogInsert, UpdateFoodLogBody } from "@/api/nutrition/foods/types";
 
-export const addFoodLogs = async (logs: FoodLogInsert[]) => {
+export const insertFoodLogs = async (logs: FoodLogInsert[]) => {
   if (!logs.length) {
     return Promise.resolve([]);
   }

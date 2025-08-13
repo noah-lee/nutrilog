@@ -5,7 +5,7 @@ import {
 } from "@/api/nutrition/activities/schemas";
 import {
   deleteActivityLogService,
-  getActivitiesService,
+  getActivityLogsService,
   updateActivityLogService,
 } from "@/api/nutrition/activities/services";
 import {
@@ -29,7 +29,7 @@ const activitiesRoutes = (fastify: FastifyInstance) => {
     const startDate = start ? new Date(start) : undefined;
     const endDate = end ? new Date(end) : undefined;
 
-    const activityLogs = await getActivitiesService(startDate, endDate);
+    const activityLogs = await getActivityLogsService(startDate, endDate);
     return reply.status(200).send(activityLogs);
   });
 

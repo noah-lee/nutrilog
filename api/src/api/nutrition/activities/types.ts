@@ -8,6 +8,8 @@ export type ActivityLog = Selectable<ActivityLogTable>;
 
 export type ActivityLogInsert = Insertable<ActivityLogTable>;
 
+export type InsertActivityLogBody = ActivityLogInsert;
+
 export type GetActivityQueries = StartEndQueries;
 
 export type GetActivitiesResponse = ActivityLog[];

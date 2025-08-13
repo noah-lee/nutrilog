@@ -28,16 +28,21 @@ const LogList = () => {
   );
 
   return (
-    <div className="flex flex-col w-full [&>*:not(:last-child)]:border-b [&>*:not(:last-child)]:border-border">
-      {isLoading
-        ? Array(5)
-            .fill(null)
-            .map((_, index) => (
-              <div key={`skeleton-${index}`} className="p-2">
-                <Skeleton className="w-full h-[47px]" />
-              </div>
-            ))
-        : logs.map((log, index) => <LogItem key={`log-${index}`} log={log} />)}
+    <div className="w-full flex flex-col gap-4">
+      <p className="font-semibold text-muted-foreground">Today's foods and activities:</p>
+      <div className="flex flex-col w-full [&>*:not(:last-child)]:border-b [&>*:not(:last-child)]:border-border">
+        {isLoading
+          ? Array(5)
+              .fill(null)
+              .map((_, index) => (
+                <div key={`skeleton-${index}`} className="p-2">
+                  <Skeleton className="w-full h-[47px]" />
+                </div>
+              ))
+          : logs.map((log, index) => (
+              <LogItem key={`log-${index}`} log={log} />
+            ))}
+      </div>
     </div>
   );
 };

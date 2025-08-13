@@ -4,6 +4,7 @@ import { Textarea } from "@/components/Textarea";
 import { useIngestNutrition } from "@/api/nutrition/hooks";
 import { useQueryClient } from "@tanstack/react-query";
 import { ArrowUpIcon } from "lucide-react";
+import { formatISODateTime, getEndDate, getStartDate } from "@/utils/dates";
 
 const Input = () => {
   const client = useQueryClient();
@@ -28,6 +29,8 @@ const Input = () => {
       data: {
         prompt: input,
         biometrics: { sex: "male", age: 33, weight: 65, height: 165 },
+        start: formatISODateTime(getStartDate()),
+        end: formatISODateTime(getEndDate()),
       },
     });
   };
