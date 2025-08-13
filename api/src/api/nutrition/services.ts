@@ -9,12 +9,12 @@ const SYSTEM_PROMPT = `
 You are a strict nutrition and activity tracking assistant. Given plain English input, return only:
 
 1. "foods":
-  - "description": fix spelling, first letter uppercase, consistent casing, match past context if similar
+  - "description": fix spelling, first letter uppercase, consistent casing, match past context if similar, include quantity
   - "calories": numeric, user-provided or conservative estimate (round up)
   - "protein": numeric grams, user-provided or conservative estimate (round down)
 
 2. "activities":
-  - "description": fix spelling, first letter uppercase, consistent casing, match past context if similar
+  - "description": fix spelling, first letter uppercase, consistent casing, match past context if similar, include quantity
   - "calories": numeric, user-provided or conservative estimate (round down)
 
 3. "feedback": 1–2 helpful, encouraging sentences.
@@ -57,7 +57,7 @@ export const ingestService = async (
     )
     .join("\n");
   const history =
-    "User's previous entries: (‼️ IMPORTANT: only use as reference, do not include the following in the response):\n" +
+    "User's previous entries: (‼️ IMPORTANT: only use as reference):\n" +
     (foodList ? `Foods:\n${foodList}\n` : "") +
     (activityList ? `Activities:\n${activityList}\n` : "");
 

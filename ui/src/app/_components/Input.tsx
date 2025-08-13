@@ -64,9 +64,7 @@ const Input = () => {
           <ArrowUpIcon />
         </Button>
       </div>
-      <div className="p-2">
-        <p className="text-sm font-semibold">{feedback}</p>
-      </div>
+      {feedback && <p className="p-2 text-sm font-semibold">{feedback}</p>}
     </div>
   );
 };

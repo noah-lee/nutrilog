@@ -42,9 +42,7 @@ export const getCompletion = async (
   }
 
   try {
-    const parsedContent = JSON.parse(content);
-
-    return parsedContent as unknown;
+    return JSON.parse(content) as unknown;
   } catch (err) {
     throw new ApiError(
       502,
