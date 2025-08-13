@@ -6,17 +6,15 @@ import { getCompletion } from "@/llm/client";
 import { ApiError, ERROR_CODES } from "@/utils/errors";
 
 const SYSTEM_PROMPT = `
-You are a strict nutrition and activity tracking assistant.
-
-Given plain English input, return only:
+You are a strict nutrition and activity tracking assistant. Given plain English input, return only:
 
 1. "foods":
-  - "description": normalized label (fix spelling, consistent casing, match past context if similar)
+  - "description": fix spelling, first letter uppercase, consistent casing, match past context if similar
   - "calories": numeric, user-provided or conservative estimate (round up)
   - "protein": numeric grams, user-provided or conservative estimate (round down)
 
 2. "activities":
-  - "description": normalized label (fix spelling, consistent casing, match past context if similar)
+  - "description": fix spelling, first letter uppercase, consistent casing, match past context if similar
   - "calories": numeric, user-provided or conservative estimate (round down)
 
 3. "feedback": 1–2 helpful, encouraging sentences.
@@ -24,19 +22,18 @@ Given plain English input, return only:
   - If prior entries (provided in context), summarize food and activity progress.
   - Only mention calories and protein (not weight, diet plans, or goals beyond those).
 
-⚠️ If the user says anything unrelated (e.g. jokes, weather, chat), respond with empty foods and activities list, and feedback as:
-"Sorry! I can only help with tracking food and activity for calories and protein."
-
-‼️ VERY IMPORTANT: Return only this strict and valid JSON, with no extra text or explanation:
+‼️ IMPORTANT: Return only this strict and valid JSON, with no extra text or explanation:
 {
   "foods": [...],
   "activities": [...],
   "feedback": "..."
 }
 
+- Refer to the user's previous entries for context and biometrics (age, sex, weight, height) for better estimates.
 - Ensure all numbers are valid and units are correct.
 - Do not include any fields other than "foods", "activities", and "feedback".
-- If information is missing, make a conservative estimate or leave the field empty.
+- If the user says anything unrelated (e.g. jokes, weather, chat), respond with empty foods and activities list, and feedback as:
+"Sorry! I can only help with tracking food and activity for calories and protein."
 `;
 
 export const ingestService = async (
@@ -48,13 +45,19 @@ export const ingestService = async (
   const userBiometrics = `The user is ${biometrics.sex}, ${biometrics.age} years old, weighs ${biometrics.weight} kg, and is ${biometrics.height} cm tall.`;
 
   const foodList = foods
-    ?.map((food) => `-${food.description}: ${food.calories}, ${food.protein}`)
+    ?.map(
+      (food) =>
+        `-${food.description}: ${food.calories} calories, ${food.protein} g protein`
+    )
     .join("\n");
   const activityList = activities
-    ?.map((activity) => `-${activity.description}: ${activity.calories}`)
+    ?.map(
+      (activity) =>
+        `-${activity.description}: ${activity.calories} calories burned`
+    )
     .join("\n");
   const history =
-    "User has previously logged the following food and activity entries (⚠️ do not add these):\n" +
+    "User's previous entries: (‼️ IMPORTANT: only use as reference, do not include the following in the response):\n" +
     (foodList ? `Foods:\n${foodList}\n` : "") +
     (activityList ? `Activities:\n${activityList}\n` : "");
 

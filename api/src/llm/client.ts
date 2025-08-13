@@ -3,9 +3,9 @@ import { LLM_API_KEY, COMPLETION_API_URL } from "./config";
 
 export const getCompletion = async (
   messages: { role: string; content: string }[],
-  model = "llama-3.1-8b-instant",
+  model = "openai/gpt-oss-20b",
   temperature = 0,
-  maxTokens = 1000
+  maxTokens = 1024
 ) => {
   const response = await fetch(COMPLETION_API_URL, {
     method: "POST",
