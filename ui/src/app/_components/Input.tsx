@@ -43,25 +43,27 @@ const Input = () => {
   };
 
   return (
-    <div className="flex flex-col flex-1 gap-2 relative min-w-[280px]">
-      <Textarea
-        id="user-input"
-        rows={3}
-        className="grow resize-none field-sizing-fixed pr-16"
-        value={input}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
-        disabled={isPending}
-        placeholder="Tell me what you ate or how you moved today — e.g., 'protein shake' or '30 min walk'"
-      />
-      <Button
-        onClick={handleAddClick}
-        disabled={isPending || !input.trim()}
-        className="absolute right-4 top-1/2 -translate-y-1/2 rounded-3xl"
-        size="icon"
-      >
-        <ArrowUpIcon />
-      </Button>
+    <div className="flex flex-col gap-2 flex-1 min-w-[280px]">
+      <div className="flex flex-col flex-1 gap-2 relative">
+        <Textarea
+          id="user-input"
+          rows={3}
+          className="grow resize-none field-sizing-fixed pr-16"
+          value={input}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          disabled={isPending}
+          placeholder="Tell me what you ate or how you moved today — e.g., 'protein shake' or '30 min walk'"
+        />
+        <Button
+          onClick={handleAddClick}
+          disabled={isPending || !input.trim()}
+          className="absolute right-4 top-1/2 -translate-y-1/2 rounded-3xl"
+          size="icon"
+        >
+          <ArrowUpIcon />
+        </Button>
+      </div>
       <div className="p-2">
         <p className="text-sm font-semibold">{feedback}</p>
       </div>

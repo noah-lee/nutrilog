@@ -2,7 +2,7 @@ import { ActivityLogInsert } from "@/api/nutrition/activities/types";
 import { FoodLogInsert } from "@/api/nutrition/foods/types";
 import { Biometrics } from "@/api/nutrition/type";
 import { isNutritionSummary } from "@/api/nutrition/utils";
-import { getCompletion } from "@/openai/client";
+import { getCompletion } from "@/llm/client";
 import { ApiError, ERROR_CODES } from "@/utils/errors";
 
 const SYSTEM_PROMPT = `

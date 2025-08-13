@@ -29,7 +29,7 @@ const LogList = () => {
 
   return (
     <div className="w-full flex flex-col gap-4">
-      <p className="font-semibold text-muted-foreground">Today's foods and activities:</p>
+      <p className="font-semibold text-muted-foreground">Today, you've added:</p>
       <div className="flex flex-col w-full [&>*:not(:last-child)]:border-b [&>*:not(:last-child)]:border-border">
         {isLoading
           ? Array(5)
