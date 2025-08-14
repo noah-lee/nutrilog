@@ -25,10 +25,8 @@ const foodsRoutes = (fastify: FastifyInstance) => {
     { schema: getFoodLogsSchema },
     async (request, reply) => {
       const { start, end } = request.query;
-
       const startDate = start ? new Date(start) : undefined;
       const endDate = end ? new Date(end) : undefined;
-
       const foodLogs = await getFoodLogsService(startDate, endDate);
       return reply.status(200).send(foodLogs);
     }
@@ -41,11 +39,6 @@ const foodsRoutes = (fastify: FastifyInstance) => {
   }>("/:id", { schema: updateFoodLogSchema }, async (request, reply) => {
     const id = request.params.id;
     const updatedFoodLog = await updateFoodLogService(id, request.body);
-
-    if (!updatedFoodLog) {
-      return reply.status(404).send("Food log entry not found");
-    }
-
     return reply.status(200).send(updatedFoodLog);
   });
 
@@ -55,11 +48,6 @@ const foodsRoutes = (fastify: FastifyInstance) => {
   }>("/:id", { schema: deleteFoodLogSchema }, async (request, reply) => {
     const id = request.params.id;
     const deletedFoodLog = await deleteFoodLogService(id);
-
-    if (!deletedFoodLog) {
-      return reply.status(404).send("Food log entry not found");
-    }
-
     return reply.status(200).send(deletedFoodLog);
   });
 };

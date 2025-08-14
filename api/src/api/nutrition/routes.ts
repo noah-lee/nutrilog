@@ -1,13 +1,7 @@
 import activitiesRoutes from "@/api/nutrition/activities/routes";
-import {
-  getActivityLogsService,
-  insertActivityLogsService,
-} from "@/api/nutrition/activities/services";
+import { getActivityLogsService, insertActivityLogsService } from "@/api/nutrition/activities/services";
 import foodsRoutes from "@/api/nutrition/foods/routes";
-import {
-  getFoodLogsService,
-  insertFoodLogsService,
-} from "@/api/nutrition/foods/services";
+import { getFoodLogsService, insertFoodLogsService } from "@/api/nutrition/foods/services";
 import { ingestSchema } from "@/api/nutrition/schemas";
 import { ingestService } from "@/api/nutrition/services";
 import { IngestRequest, IngestResponse } from "@/api/nutrition/type";

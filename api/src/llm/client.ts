@@ -1,5 +1,4 @@
 import { ApiError, ERROR_CODES } from "@/utils/errors";
-import { LLM_API_KEY, COMPLETION_API_URL } from "./config";
 
 export const getCompletion = async (
   messages: { role: string; content: string }[],
@@ -7,10 +6,10 @@ export const getCompletion = async (
   temperature = 0,
   maxTokens = 1024
 ) => {
-  const response = await fetch(COMPLETION_API_URL, {
+  const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${LLM_API_KEY}`,
+      Authorization: `Bearer ${process.env.GROQ_API_KEY!}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -24,7 +23,7 @@ export const getCompletion = async (
   if (!response.ok) {
     const errorBody = await response.text();
     throw new ApiError(
-      response.status === 401 ? 401 : 503,
+      response.status,
       `LLM API error: ${response.status} - ${errorBody}`,
       ERROR_CODES.EXTERNAL_API_ERROR
     );

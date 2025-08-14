@@ -17,6 +17,7 @@ export const ERROR_CODES = {
   EXTERNAL_API_ERROR: "EXTERNAL_API_ERROR",
   DATABASE_ERROR: "DATABASE_ERROR",
   INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
+  UNAUTHORIZED: "UNAUTHORIZED",
 } as const;
 
 export const errorHandler = (error: FastifyError, reply: FastifyReply) => {

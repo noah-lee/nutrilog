@@ -1,4 +1,6 @@
+import { getActivityLogsService } from "@/api/nutrition/activities/services";
 import { ActivityLogInsert } from "@/api/nutrition/activities/types";
+import { getFoodLogsService } from "@/api/nutrition/foods/services";
 import { FoodLogInsert } from "@/api/nutrition/foods/types";
 import { Biometrics } from "@/api/nutrition/type";
 import { isNutritionSummary } from "@/api/nutrition/utils";

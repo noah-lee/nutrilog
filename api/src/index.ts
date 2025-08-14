@@ -1,8 +1,11 @@
 import apiRoutes from "@/api/routes";
 import Fastify from "fastify";
 import cors from "@fastify/cors";
+import cookie from "@fastify/cookie";
 import { errorHandler } from "@/utils/errors";
 import { CORS_CONFIG } from "@/cors/config";
+import dotenv from "dotenv";
+dotenv.config();
 
 const fastify = Fastify({
   logger: true,
@@ -14,6 +17,7 @@ const fastify = Fastify({
 });
 
 fastify.register(cors, CORS_CONFIG);
+fastify.register(cookie);
 
 fastify.setErrorHandler((error, _, reply) => {
   fastify.log.error(error);
@@ -24,7 +28,7 @@ fastify.register(apiRoutes, { prefix: "/api" });
 
 const start = async () => {
   try {
-    await fastify.listen({ port: 3000, host: "0.0.0.0" });
+    await fastify.listen({ port: Number(process.env.API_PORT), host: "0.0.0.0" });
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);

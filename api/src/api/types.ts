@@ -14,4 +14,10 @@ export interface Database {
     calories: number;
     created_at: Generated<Date>;
   };
+  users: {
+    id: Generated<string>;
+    email: string;
+    name: string;
+    created_at: Generated<Date>;
+  }
 }
