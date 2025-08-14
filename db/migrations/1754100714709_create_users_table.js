@@ -9,13 +9,14 @@ export const shorthands = undefined;
  * @returns {Promise<void> | void}
  */
 export const up = (pgm) => {
-  pgm.createExtension("vector", { ifNotExists: true });
-
-  pgm.createTable("food_logs", {
-    id: { type: "serial", primaryKey: true },
-    description: { type: "text", notNull: true },
-    calories: { type: "integer", notNull: true },
-    protein: { type: "integer", notNull: true },
+  pgm.createTable("users", {
+    id: {
+      type: "uuid",
+      primaryKey: true,
+      default: pgm.func("gen_random_uuid()"),
+    },
+    email: { type: "text", notNull: true, unique: true },
+    name: { type: "text", notNull: true },
     created_at: {
       type: "timestamptz",
       notNull: true,
@@ -23,16 +24,7 @@ export const up = (pgm) => {
     },
   });
 
-  pgm.createTable("activity_logs", {
-    id: { type: "serial", primaryKey: true },
-    description: { type: "text", notNull: true },
-    calories: { type: "integer", notNull: true },
-    created_at: {
-      type: "timestamptz",
-      notNull: true,
-      default: pgm.func("current_timestamp"),
-    },
-  });
+
 };
 
 /**
@@ -41,7 +33,7 @@ export const up = (pgm) => {
  * @returns {Promise<void> | void}
  */
 export const down = (pgm) => {
+  pgm.dropTable("users");
   pgm.dropTable("food_logs");
   pgm.dropTable("activity_logs");
-  pgm.dropExtension("vector");
 };
