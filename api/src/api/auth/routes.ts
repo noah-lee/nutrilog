@@ -11,10 +11,10 @@ const authRoutes = (fastify: FastifyInstance) => {
     );
   });
 
-  fastify.post<{ Body: { code: string } }>(
+  fastify.get<{ Querystring: { code: string } }>(
     "/google/callback",
     async (request, reply) => {
-      const { code } = request.body;
+      const { code } = request.query;
 
       if (!code) {
         throw new ApiError(
