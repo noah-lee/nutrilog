@@ -4,15 +4,16 @@ import {
   insertActivityLogs,
   updateActivityLog,
 } from "@/api/nutrition/activities/repositories";
-import { InsertActivityLogBody, UpdateActivityLogBody } from "./types";
+import { ActivityLogInsert, ActivityLogUpdate } from "./types";
 import { ApiError, ERROR_CODES } from "@/utils/errors";
 
 export const getActivityLogsService = async (
+  userId: string,
   startDate?: Date,
   endDate?: Date
 ) => {
   try {
-    return await getActivityLogs(startDate, endDate);
+    return await getActivityLogs(userId, startDate, endDate);
   } catch (error) {
     throw new ApiError(
       500,
@@ -23,7 +24,7 @@ export const getActivityLogsService = async (
 };
 
 export const insertActivityLogsService = async (
-  data: InsertActivityLogBody[]
+  data: ActivityLogInsert[]
 ) => {
   try {
     return await insertActivityLogs(data);
@@ -37,11 +38,12 @@ export const insertActivityLogsService = async (
 };
 
 export const updateActivityLogService = async (
+  userId: string,
   id: number,
-  data: UpdateActivityLogBody
+  data: ActivityLogUpdate
 ) => {
   try {
-    const result = await updateActivityLog(id, data);
+    const result = await updateActivityLog(userId, id, data);
     if (!result) {
       throw new ApiError(
         404,
@@ -60,9 +62,9 @@ export const updateActivityLogService = async (
   }
 };
 
-export const deleteActivityLogService = async (id: number) => {
+export const deleteActivityLogService = async (userId: string, id: number) => {
   try {
-    const result = await deleteActivityLog(id);
+    const result = await deleteActivityLog(userId, id);
     if (!result) {
       throw new ApiError(
         404,

@@ -1,7 +1,7 @@
 import db from "@/db/config";
 import {
   ActivityLogInsert,
-  UpdateActivityLogBody,
+  ActivityLogUpdate,
 } from "@/api/nutrition/activities/types";
 
 export const insertActivityLogs = async (logs: ActivityLogInsert[]) => {
@@ -11,12 +11,19 @@ export const insertActivityLogs = async (logs: ActivityLogInsert[]) => {
   return await db
     .insertInto("activity_logs")
     .values(logs)
-    .returningAll()
+    .returning(["id", "description", "calories", "created_at"])
     .execute();
 };
 
-export const getActivityLogs = async (startDate?: Date, endDate?: Date) => {
-  let query = db.selectFrom("activity_logs").selectAll();
+export const getActivityLogs = async (
+  userId: string,
+  startDate?: Date,
+  endDate?: Date
+) => {
+  let query = db
+    .selectFrom("activity_logs")
+    .select(["id", "description", "calories", "created_at"])
+    .where("user_id", "=", userId);
 
   if (startDate) {
     query = query.where("created_at", ">=", startDate);
@@ -30,21 +37,24 @@ export const getActivityLogs = async (startDate?: Date, endDate?: Date) => {
 };
 
 export const updateActivityLog = async (
+  userId: string,
   id: number,
-  data: UpdateActivityLogBody
+  data: ActivityLogUpdate
 ) => {
   return await db
     .updateTable("activity_logs")
     .set(data)
     .where("id", "=", id)
-    .returningAll()
+    .where("user_id", "=", userId)
+    .returning(["id", "description", "calories", "created_at"])
     .executeTakeFirst();
 };
 
-export const deleteActivityLog = async (id: number) => {
+export const deleteActivityLog = async (userId: string, id: number) => {
   return await db
     .deleteFrom("activity_logs")
     .where("id", "=", id)
-    .returningAll()
+    .where("user_id", "=", userId)
+    .returning(["id", "description", "calories", "created_at"])
     .executeTakeFirst();
 };

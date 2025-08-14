@@ -3,6 +3,7 @@ import { Generated } from "kysely";
 export interface Database {
   food_logs: {
     id: Generated<number>;
+    user_id: string;
     description: string;
     calories: number;
     protein: number;
@@ -10,6 +11,7 @@ export interface Database {
   };
   activity_logs: {
     id: Generated<number>;
+    user_id: string;
     description: string;
     calories: number;
     created_at: Generated<Date>;

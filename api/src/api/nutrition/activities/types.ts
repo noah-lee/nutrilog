@@ -1,25 +1,16 @@
-import { StartEndQueries } from "@/api/nutrition/type";
 import { Database } from "@/api/types";
 import { Insertable, Selectable, Updateable } from "kysely";
 
 type ActivityLogTable = Database["activity_logs"];
 
-export type ActivityLog = Selectable<ActivityLogTable>;
+export type ActivityLog = Omit<Selectable<ActivityLogTable>, "user_id">;
 
-export type ActivityLogInsert = Insertable<ActivityLogTable>;
+export type ActivityLogInsert = Omit<
+  Insertable<ActivityLogTable>,
+  "id" | "created_at"
+>;
 
-export type InsertActivityLogBody = ActivityLogInsert;
-
-export type GetActivityQueries = StartEndQueries;
-
-export type GetActivitiesResponse = ActivityLog[];
-
-export type UpdateActivityLogParams = { id: number };
-
-export type UpdateActivityLogBody = Updateable<ActivityLogTable>;
-
-export type UpdateActivityLogResponse = ActivityLog | string;
-
-export type DeleteActivityLogParams = { id: number };
-
-export type DeleteActivityLogResponse = ActivityLog | string;
+export type ActivityLogUpdate = Omit<
+  Updateable<ActivityLogTable>,
+  "id" | "user_id" | "created_at"
+>;

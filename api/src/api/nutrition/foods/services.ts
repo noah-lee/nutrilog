@@ -4,12 +4,16 @@ import {
   insertFoodLogs,
   updateFoodLog,
 } from "@/api/nutrition/foods/repositories";
-import { InsertFoodLogBody, UpdateFoodLogBody } from "./types";
+import { FoodLogInsert, FoodLogUpdate } from "@/api/nutrition/foods/types";
 import { ApiError, ERROR_CODES } from "@/utils/errors";
 
-export const getFoodLogsService = async (startDate?: Date, endDate?: Date) => {
+export const getFoodLogsService = async (
+  userId: string,
+  startDate?: Date,
+  endDate?: Date
+) => {
   try {
-    return await getFoodLogs(startDate, endDate);
+    return await getFoodLogs(userId, startDate, endDate);
   } catch (error) {
     throw new ApiError(
       500,
@@ -19,7 +23,7 @@ export const getFoodLogsService = async (startDate?: Date, endDate?: Date) => {
   }
 };
 
-export const insertFoodLogsService = async (data: InsertFoodLogBody[]) => {
+export const insertFoodLogsService = async (data: FoodLogInsert[]) => {
   try {
     return await insertFoodLogs(data);
   } catch (error) {
@@ -32,11 +36,12 @@ export const insertFoodLogsService = async (data: InsertFoodLogBody[]) => {
 };
 
 export const updateFoodLogService = async (
+  userId: string,
   id: number,
-  data: UpdateFoodLogBody
+  data: FoodLogUpdate
 ) => {
   try {
-    const result = await updateFoodLog(id, data);
+    const result = await updateFoodLog(userId, id, data);
     if (!result) {
       throw new ApiError(
         404,
@@ -55,9 +60,9 @@ export const updateFoodLogService = async (
   }
 };
 
-export const deleteFoodLogService = async (id: number) => {
+export const deleteFoodLogService = async (userId: string, id: number) => {
   try {
-    const result = await deleteFoodLog(id);
+    const result = await deleteFoodLog(userId, id);
     if (!result) {
       throw new ApiError(
         404,

@@ -8,46 +8,46 @@ import {
   getFoodLogsService,
   updateFoodLogService,
 } from "@/api/nutrition/foods/services";
-import {
-  GetFoodsResponse,
-  UpdateFoodLogBody,
-  UpdateFoodLogResponse,
-  UpdateFoodLogParams,
-  DeleteFoodLogParams,
-  DeleteFoodLogResponse,
-  GetFoodQueries,
-} from "@/api/nutrition/foods/types";
+import { FoodLog, FoodLogUpdate } from "@/api/nutrition/foods/types";
+import { StartEndQueries } from "@/api/nutrition/type";
 import { FastifyInstance } from "fastify";
 
 const foodsRoutes = (fastify: FastifyInstance) => {
-  fastify.get<{ Reply: GetFoodsResponse; Querystring: GetFoodQueries }>(
+  fastify.get<{ Querystring: StartEndQueries; Reply: FoodLog[] }>(
     "/",
     { schema: getFoodLogsSchema },
     async (request, reply) => {
       const { start, end } = request.query;
+      const user = request.user!;
       const startDate = start ? new Date(start) : undefined;
       const endDate = end ? new Date(end) : undefined;
-      const foodLogs = await getFoodLogsService(startDate, endDate);
+      const foodLogs = await getFoodLogsService(user.id, startDate, endDate);
       return reply.status(200).send(foodLogs);
     }
   );
 
   fastify.patch<{
-    Params: UpdateFoodLogParams;
-    Body: UpdateFoodLogBody;
-    Reply: UpdateFoodLogResponse;
+    Params: { id: number };
+    Body: FoodLogUpdate;
+    Reply: FoodLog;
   }>("/:id", { schema: updateFoodLogSchema }, async (request, reply) => {
     const id = request.params.id;
-    const updatedFoodLog = await updateFoodLogService(id, request.body);
+    const user = request.user!;
+    const updatedFoodLog = await updateFoodLogService(
+      user.id,
+      id,
+      request.body
+    );
     return reply.status(200).send(updatedFoodLog);
   });
 
   fastify.delete<{
-    Params: DeleteFoodLogParams;
-    Reply: DeleteFoodLogResponse;
+    Params: { id: number };
+    Reply: FoodLog;
   }>("/:id", { schema: deleteFoodLogSchema }, async (request, reply) => {
     const id = request.params.id;
-    const deletedFoodLog = await deleteFoodLogService(id);
+    const user = request.user!;
+    const deletedFoodLog = await deleteFoodLogService(user.id, id);
     return reply.status(200).send(deletedFoodLog);
   });
 };

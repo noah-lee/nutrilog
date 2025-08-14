@@ -4,22 +4,11 @@ import { Insertable, Selectable, Updateable } from "kysely";
 
 type FoodLogTable = Database["food_logs"];
 
-export type FoodLog = Selectable<FoodLogTable>;
+export type FoodLog = Omit<Selectable<FoodLogTable>, "user_id">;
 
-export type FoodLogInsert = Insertable<FoodLogTable>;
+export type FoodLogInsert = Omit<Insertable<FoodLogTable>, "id" | "created_at">;
 
-export type InsertFoodLogBody = FoodLogInsert;
-
-export type GetFoodQueries = StartEndQueries;
-
-export type GetFoodsResponse = FoodLog[];
-
-export type UpdateFoodLogParams = { id: number };
-
-export type UpdateFoodLogBody = Updateable<FoodLogTable>;
-
-export type UpdateFoodLogResponse = FoodLog | string;
-
-export type DeleteFoodLogParams = { id: number };
-
-export type DeleteFoodLogResponse = FoodLog | string;
+export type FoodLogUpdate = Omit<
+  Updateable<FoodLogTable>,
+  "id" | "user_id" | "created_at"
+>;
