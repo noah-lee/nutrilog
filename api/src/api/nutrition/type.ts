@@ -2,8 +2,8 @@ import { ActivityLogInsert } from "@/api/nutrition/activities/types";
 import { FoodLogInsert } from "@/api/nutrition/foods/types";
 
 export type NutritionSummary = {
-  foods: FoodLogInsert[];
-  activities: ActivityLogInsert[];
+  foods: Omit<FoodLogInsert, "userId">[];
+  activities: Omit<ActivityLogInsert, "userId">[];
   feedback: string;
 };
 

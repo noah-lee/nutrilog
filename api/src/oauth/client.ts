@@ -1,3 +1,4 @@
+import { ProviderUser } from "@/oauth/types";
 import { isProviderUser } from "@/oauth/utils";
 import { ApiError, ERROR_CODES } from "@/utils/errors";
 import dotenv from "dotenv";
@@ -69,5 +70,5 @@ export const getGoogleUserInfo = async (googleToken: string) => {
     );
   }
 
-  return user;
+  return { email: user.email, name: user.name } as ProviderUser;
 };

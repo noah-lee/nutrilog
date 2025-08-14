@@ -1,7 +1,5 @@
-import { getActivityLogsService } from "@/api/nutrition/activities/services";
-import { ActivityLogInsert } from "@/api/nutrition/activities/types";
-import { getFoodLogsService } from "@/api/nutrition/foods/services";
-import { FoodLogInsert } from "@/api/nutrition/foods/types";
+import { ActivityLog } from "@/api/nutrition/activities/types";
+import { FoodLog } from "@/api/nutrition/foods/types";
 import { Biometrics } from "@/api/nutrition/type";
 import { isNutritionSummary } from "@/api/nutrition/utils";
 import { getCompletion } from "@/llm/client";
@@ -24,25 +22,25 @@ You are a strict nutrition and activity tracking assistant. Given plain English 
   - If prior entries (provided in context), summarize food and activity progress.
   - Only mention calories and protein (not weight, diet plans, or goals beyond those).
 
+- Refer to the user's previous entries for context and biometrics (age, sex, weight, height) for better estimates.
+- Ensure all numbers are valid and units are correct.
+- Do not include any fields other than "foods", "activities", and "feedback".
+- If the user says anything unrelated (e.g. jokes, weather, chat), respond with empty foods and activities list, and feedback as:
+"Sorry! I can only help with tracking food and activity for calories and protein."
+
 ‼️ IMPORTANT: Return only this strict and valid JSON, with no extra text or explanation:
 {
   "foods": [...],
   "activities": [...],
   "feedback": "..."
 }
-
-- Refer to the user's previous entries for context and biometrics (age, sex, weight, height) for better estimates.
-- Ensure all numbers are valid and units are correct.
-- Do not include any fields other than "foods", "activities", and "feedback".
-- If the user says anything unrelated (e.g. jokes, weather, chat), respond with empty foods and activities list, and feedback as:
-"Sorry! I can only help with tracking food and activity for calories and protein."
 `;
 
 export const ingestService = async (
   prompt: string,
   biometrics: Biometrics,
-  foods?: FoodLogInsert[],
-  activities?: ActivityLogInsert[]
+  foods?: FoodLog[],
+  activities?: ActivityLog[]
 ) => {
   const userBiometrics = `The user is ${biometrics.sex}, ${biometrics.age} years old, weighs ${biometrics.weight} kg, and is ${biometrics.height} cm tall.`;
 
@@ -59,7 +57,7 @@ export const ingestService = async (
     )
     .join("\n");
   const history =
-    "User's previous entries: (‼️ IMPORTANT: only use as reference):\n" +
+    "User's previous entries: (‼️ IMPORTANT: DO NOT RETURN IN RESPONSE):\n" +
     (foodList ? `Foods:\n${foodList}\n` : "") +
     (activityList ? `Activities:\n${activityList}\n` : "");
 
