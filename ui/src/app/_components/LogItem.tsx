@@ -109,7 +109,7 @@ const LogItem: FC<Props> = ({ log }) => {
     const input = event.target.value;
 
     if (input === "") {
-      setCalories("");
+      setProtein("");
       return;
     }
 
