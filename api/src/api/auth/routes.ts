@@ -1,3 +1,4 @@
+import { handleAuth } from "@/api/auth/handlers";
 import { handleGoogleCallbackService } from "@/api/auth/services";
 import { ApiError, ERROR_CODES } from "@/utils/errors";
 import { FastifyInstance } from "fastify";
@@ -37,6 +38,31 @@ const authRoutes = (fastify: FastifyInstance) => {
       return reply.redirect(process.env.CORS_ORIGIN!);
     }
   );
+
+  fastify.get<{ Reply: { signedIn: boolean } }>(
+    "/status",
+    { preHandler: [handleAuth] },
+    async (request, reply) => {
+      const { user } = request;
+
+      if (!user) {
+        return reply.status(401).send({ signedIn: false });
+      }
+
+      return reply.send({ signedIn: true });
+    }
+  );
+
+  fastify.post("/signout", async (_, reply) => {
+    reply.clearCookie("access_token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/api",
+    });
+
+    return reply.status(200).send();
+  });
 };
 
 export default authRoutes;

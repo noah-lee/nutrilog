@@ -1,3 +1,4 @@
+import type { ApiError } from "@/api/axios";
 import {
   QueryClient,
   type UseMutationOptions,
@@ -9,6 +10,12 @@ export const queryClient = new QueryClient({
     queries: {
       refetchOnWindowFocus: false,
       refetchOnMount: false,
+      retry: (failureCount: number, error: unknown) => {
+        if ((error as ApiError)?.statusCode === 401) {
+          return false;
+        }
+        return failureCount < 3;
+      },
     },
   },
 });

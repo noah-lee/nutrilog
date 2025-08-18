@@ -5,7 +5,7 @@ const THEME_LOCAL_STORAGE_KEY = "theme";
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(THEME_LOCAL_STORAGE_KEY) as Theme) || "light"
+    () => (localStorage.getItem(THEME_LOCAL_STORAGE_KEY) as Theme) || "dark"
   );
 
   const handleThemeChange = (theme: Theme) => {

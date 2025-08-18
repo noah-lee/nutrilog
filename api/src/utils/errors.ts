@@ -23,27 +23,24 @@ export const ERROR_CODES = {
 export const errorHandler = (error: FastifyError, reply: FastifyReply) => {
   if (error instanceof ApiError) {
     return reply.status(error.statusCode).send({
-      error: {
-        message: error.message,
-        code: error.code,
-      },
+      message: error.message,
+      code: error.code,
+      statusCode: error.statusCode,
     });
   }
 
   if (error.validation) {
     return reply.status(400).send({
-      error: {
-        message: "Validation error",
-        code: ERROR_CODES.VALIDATION_ERROR,
-        details: error.validation,
-      },
+      message: "Validation error",
+      code: ERROR_CODES.VALIDATION_ERROR,
+      statusCode: 400,
+      details: error.validation,
     });
   }
 
   return reply.status(500).send({
-    error: {
-      message: "Internal server error",
-      code: ERROR_CODES.INTERNAL_SERVER_ERROR,
-    },
+    message: "Internal server error",
+    code: ERROR_CODES.INTERNAL_SERVER_ERROR,
+    statusCode: 500,
   });
 };

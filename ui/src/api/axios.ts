@@ -34,7 +34,9 @@ axiosInstance.interceptors.response.use(
 
 export type ApiError = {
   message: string;
-  status?: number;
+  status: string;
+  statusCode: number;
+  details?: string;
 };
 
 export async function api<T>(
@@ -43,15 +45,12 @@ export async function api<T>(
 ): Promise<T> {
   try {
     return await axiosInstance(endpoint, config);
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      throw {
-        message: error.response?.data?.message || error.message,
-        status: error.response?.status,
-      } as ApiError;
-    }
+  } catch (error: unknown) {
     throw {
       message: (error as Error).message || "Unknown error",
+      status: (error as ApiError).status || "error",
+      statusCode: (error as ApiError).statusCode || 500,
+      details: (error as ApiError).details,
     } as ApiError;
   }
 }
