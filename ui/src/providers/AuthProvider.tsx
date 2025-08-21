@@ -3,10 +3,10 @@ import { AuthContext } from "@/hooks/useAuth";
 import { type ReactNode } from "react";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const { data: status } = useGetAuthStatus();
+  const { data: me } = useGetAuthStatus();
 
   return (
-    <AuthContext.Provider value={{ signedIn: !!status?.signedIn }}>
+    <AuthContext.Provider value={{ me: me ?? null }}>
       {children}
     </AuthContext.Provider>
   );

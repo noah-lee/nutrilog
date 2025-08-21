@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { HeartHandshakeIcon } from "lucide-react";
 
 const App = () => {
-  const { signedIn } = useAuth();
+  const { me } = useAuth();
 
   const handleSignOut = async () => {
     try {
@@ -33,14 +33,14 @@ const App = () => {
           <HeartHandshakeIcon />
           <h1 className="text-2xl font-bold">Nutrilog</h1>
         </div>
-        {signedIn && (
+        {me && (
           <Button variant="outline" onClick={handleSignOut}>
             Sign out
           </Button>
         )}
       </header>
       <main className="container flex-1 flex flex-col items-center gap-4">
-        {signedIn ? (
+        {me ? (
           <>
             <div className="w-full flex gap-4 flex-wrap">
               <SummaryCard />

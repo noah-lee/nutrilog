@@ -5,8 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 
 export const useGetAuthStatus = (options?: UseTypedQueryOptions<GetAuthStatusResponse>) => {
   return useQuery({
-    queryKey: ["auth-status"],
-    queryFn: () => api<GetAuthStatusResponse>("/auth/status"),
+    queryKey: ["me"],
+    queryFn: () => api<GetAuthStatusResponse>("/auth/me"),
     ...options,
   });
 };

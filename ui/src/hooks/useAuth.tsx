@@ -1,8 +1,9 @@
+import type { User } from "@/api/auth/types";
 import { createContext, useContext } from "react";
 
 
 interface AuthContextProps {
-  signedIn: boolean;
+  me: User | null;
 }
 
 export const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
