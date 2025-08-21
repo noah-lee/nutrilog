@@ -1,5 +1,6 @@
 import { handleAuth } from "@/api/auth/handlers";
 import { handleGoogleCallbackService } from "@/api/auth/services";
+import { User } from "@/api/auth/types";
 import { ApiError, ERROR_CODES } from "@/utils/errors";
 import { FastifyInstance } from "fastify";
 
@@ -39,17 +40,17 @@ const authRoutes = (fastify: FastifyInstance) => {
     }
   );
 
-  fastify.get<{ Reply: { signedIn: boolean } }>(
-    "/status",
+  fastify.get<{ Reply: User }>(
+    "/me",
     { preHandler: [handleAuth] },
     async (request, reply) => {
       const { user } = request;
 
       if (!user) {
-        return reply.status(401).send({ signedIn: false });
+        return reply.status(401).send();
       }
 
-      return reply.send({ signedIn: true });
+      return reply.send(user);
     }
   );
 

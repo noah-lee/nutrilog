@@ -20,6 +20,11 @@ export interface Database {
     id: Generated<string>;
     email: string;
     name: string;
+    calories: Generated<number>;
+    protein: Generated<number>;
+    weight: Generated<number>;
+    height: Generated<number>;
+    sex: Generated<"male" | "female" | "other">;
     created_at: Generated<Date>;
-  }
+  };
 }
