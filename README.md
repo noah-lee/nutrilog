@@ -24,7 +24,7 @@ This system enables fast, flexible tracking with minimal manual input, powered b
 To start both the API and the database services, use:
 
 ```bash
-docker compose up db api
+docker compose up db api ui
 ```
 
 ## Running Migrations
