@@ -22,9 +22,10 @@ export interface Database {
     name: string;
     calories: Generated<number>;
     protein: Generated<number>;
-    weight: Generated<number>;
-    height: Generated<number>;
-    sex: Generated<"male" | "female" | "other">;
+    age: number | null;
+    sex: "male" | "female" | "other" | null;
+    weight: number | null;
+    height: number | null;
     created_at: Generated<Date>;
   };
 }

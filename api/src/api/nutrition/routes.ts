@@ -21,7 +21,7 @@ const nutritionRoutes = (fastify: FastifyInstance) => {
     "/ingest",
     { schema: ingestSchema },
     async (request, reply) => {
-      const { prompt, biometrics, start, end } = request.body;
+      const { prompt, start, end } = request.body;
       const user = request.user!;
 
       const startDate = start ? new Date(start) : undefined;
@@ -38,7 +38,7 @@ const nutritionRoutes = (fastify: FastifyInstance) => {
 
       const nutritionSummary = await ingestService(
         prompt,
-        biometrics,
+        user,
         foods,
         activities
       );
