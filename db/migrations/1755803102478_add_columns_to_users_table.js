@@ -22,20 +22,17 @@ export const up = (pgm) => {
       notNull: true,
       default: 150,
     },
+    sex: {
+      type: "sex_enum",
+    },
+    age: {
+      type: "integer",
+    },
     weight: {
       type: "integer",
-      notNull: true,
-      default: 80,
     },
     height: {
       type: "integer",
-      notNull: true,
-      default: 175,
-    },
-    sex: {
-      type: "sex_enum",
-      default: "male",
-      notNull: true,
     },
   });
 };
@@ -46,6 +43,13 @@ export const up = (pgm) => {
  * @returns {Promise<void> | void}
  */
 export const down = (pgm) => {
-  pgm.dropColumns("users", ["calories", "protein", "weight", "height", "sex"]);
+  pgm.dropColumns("users", [
+    "calories",
+    "protein",
+    "sex",
+    "age",
+    "weight",
+    "height",
+  ]);
   pgm.dropType("sex_enum");
 };
