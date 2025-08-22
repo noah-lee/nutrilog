@@ -1,6 +1,6 @@
 import { ProviderUser } from "@/oauth/types";
 import db from "@/db/config";
-import { ApiError } from "@/utils/errors";
+import { UserUpdate } from "@/api/profile/types";
 
 export const getOrInsertUser = async (providerUser: ProviderUser) => {
   const [existingUser] = await db
@@ -30,4 +30,15 @@ export const getUserById = async (id: string) => {
     .execute();
 
   return user ?? null;
+};
+
+export const updateUserById = async (id: string, data: UserUpdate) => {
+  const [updatedUser] = await db
+    .updateTable("users")
+    .set(data)
+    .where("id", "=", id)
+    .returningAll()
+    .execute();
+
+  return updatedUser ?? null;
 };

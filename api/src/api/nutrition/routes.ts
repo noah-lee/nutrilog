@@ -11,7 +11,8 @@ import {
 } from "@/api/nutrition/foods/services";
 import { ingestSchema } from "@/api/nutrition/schemas";
 import { ingestService } from "@/api/nutrition/services";
-import { IngestRequest, IngestResponse } from "@/api/nutrition/type";
+import { IngestRequest, IngestResponse } from "@/api/nutrition/types";
+import { getUserService } from "@/api/profile/services";
 import { FastifyInstance } from "fastify";
 
 const nutritionRoutes = (fastify: FastifyInstance) => {
@@ -22,18 +23,20 @@ const nutritionRoutes = (fastify: FastifyInstance) => {
     { schema: ingestSchema },
     async (request, reply) => {
       const { prompt, start, end } = request.body;
-      const user = request.user!;
+      const userId = request.userId!;
+
+      const user = await getUserService(userId);
 
       const startDate = start ? new Date(start) : undefined;
       const endDate = end ? new Date(end) : undefined;
 
       const foods =
         startDate && endDate
-          ? await getFoodLogsService(user.id, startDate, endDate)
+          ? await getFoodLogsService(userId, startDate, endDate)
           : undefined;
       const activities =
         startDate && endDate
-          ? await getActivityLogsService(user.id, startDate, endDate)
+          ? await getActivityLogsService(userId, startDate, endDate)
           : undefined;
 
       const nutritionSummary = await ingestService(
@@ -45,11 +48,11 @@ const nutritionRoutes = (fastify: FastifyInstance) => {
 
       const foodInserts = nutritionSummary.foods.map((food) => ({
         ...food,
-        user_id: user.id,
+        user_id: userId,
       }));
       const activityInserts = nutritionSummary.activities.map((activity) => ({
         ...activity,
-        user_id: user.id,
+        user_id: userId,
       }));
 
       await insertFoodLogsService(foodInserts);

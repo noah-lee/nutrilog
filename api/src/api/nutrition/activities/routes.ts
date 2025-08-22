@@ -12,7 +12,7 @@ import {
   ActivityLog,
   ActivityLogUpdate,
 } from "@/api/nutrition/activities/types";
-import { StartEndQueries } from "@/api/nutrition/type";
+import { StartEndQueries } from "@/api/nutrition/types";
 import { FastifyInstance } from "fastify";
 
 const activitiesRoutes = (fastify: FastifyInstance) => {
@@ -21,11 +21,11 @@ const activitiesRoutes = (fastify: FastifyInstance) => {
     Reply: ActivityLog[];
   }>("/", { schema: getActivityLogsSchema }, async (request, reply) => {
     const { start, end } = request.query;
-    const user = request.user!;
+    const userId = request.userId!;
     const startDate = start ? new Date(start) : undefined;
     const endDate = end ? new Date(end) : undefined;
     const activityLogs = await getActivityLogsService(
-      user.id,
+      userId,
       startDate,
       endDate
     );
@@ -37,11 +37,11 @@ const activitiesRoutes = (fastify: FastifyInstance) => {
     Body: ActivityLogUpdate;
     Reply: ActivityLog;
   }>("/:id", { schema: updateActivityLogSchema }, async (request, reply) => {
-    const id = request.params.id;
-    const user = request.user!;
+    const userId = request.userId!;
+    const activityId = request.params.id;
     const updatedActivityLog = await updateActivityLogService(
-      user.id,
-      id,
+      userId,
+      activityId,
       request.body
     );
     return reply.status(200).send(updatedActivityLog);
@@ -51,9 +51,9 @@ const activitiesRoutes = (fastify: FastifyInstance) => {
     Params: { id: number };
     Reply: ActivityLog;
   }>("/:id", { schema: deleteActivityLogSchema }, async (request, reply) => {
-    const id = request.params.id;
-    const user = request.user!;
-    const deletedActivityLog = await deleteActivityLogService(user.id, id);
+    const userId = request.userId!;
+    const activityId = request.params.id;
+    const deletedActivityLog = await deleteActivityLogService(userId, activityId);
     return reply.status(200).send(deletedActivityLog);
   });
 };

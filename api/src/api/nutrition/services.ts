@@ -1,7 +1,7 @@
-import { User } from "@/api/auth/types";
 import { ActivityLog } from "@/api/nutrition/activities/types";
 import { FoodLog } from "@/api/nutrition/foods/types";
 import { isNutritionSummary } from "@/api/nutrition/utils";
+import { User } from "@/api/profile/types";
 import { getCompletion } from "@/llm/client";
 import { ApiError, ERROR_CODES } from "@/utils/errors";
 

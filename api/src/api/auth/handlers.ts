@@ -1,11 +1,10 @@
-import { User } from "@/api/auth/types";
 import { ApiError, ERROR_CODES } from "@/utils/errors";
 import { FastifyReply, FastifyRequest } from "fastify";
 import jwt from "jsonwebtoken";
 
 declare module "fastify" {
   interface FastifyRequest {
-    user?: User;
+    userId?: string;
   }
 }
 
@@ -20,11 +19,11 @@ export const handleAuth = (
     throw new ApiError(401, "Unauthorized", ERROR_CODES.UNAUTHORIZED);
   }
 
-  const user = jwt.verify(
+  const { userId } = jwt.verify(
     accessToken,
     process.env.ACCESS_TOKEN_SECRET!
-  ) as User;
+  ) as { userId: string };
 
-  request.user = user;
+  request.userId = userId;
   done();
 };

@@ -1,4 +1,4 @@
-import { StartEndQueries } from "@/api/nutrition/type";
+import { StartEndQueries } from "@/api/nutrition/types";
 import { Database } from "@/api/types";
 import { Insertable, Selectable, Updateable } from "kysely";
 

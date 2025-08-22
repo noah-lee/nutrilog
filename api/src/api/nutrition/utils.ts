@@ -1,6 +1,6 @@
 import { isActivityLog } from "@/api/nutrition/activities/utils";
 import { isFoodLog } from "@/api/nutrition/foods/utils";
-import { NutritionSummary } from "@/api/nutrition/type";
+import { NutritionSummary } from "@/api/nutrition/types";
 
 export const isNutritionSummary = (
   value: unknown
