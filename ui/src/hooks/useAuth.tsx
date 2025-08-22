@@ -3,7 +3,8 @@ import { createContext, useContext } from "react";
 
 
 interface AuthContextProps {
-  me: User | null;
+  me: User | null ;
+  loading: boolean;
 }
 
 export const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);

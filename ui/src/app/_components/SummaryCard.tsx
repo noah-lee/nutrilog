@@ -201,7 +201,7 @@ const SummaryCard = () => {
                 </div>
               </div>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="cursor-pointer">
+                <Button variant="ghost" size="icon">
                   <Edit2Icon />
                 </Button>
               </SheetTrigger>
@@ -247,14 +247,14 @@ const SummaryCard = () => {
           <SheetTitle>Edit Profile</SheetTitle>
           <SheetDescription>
             Update your calorie and protein goals, and personal details (age,
-            sex, height, weight). Click save when you're done.
+            sex, weight, height). Click save when you're done.
           </SheetDescription>
         </SheetHeader>
         <div className="flex flex-col gap-4 justify-between px-4">
           <div className="flex flex-col gap-4">
-            <h3>Daily Goal</h3>
+            <h3>Your daily goal</h3>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="calorieTarget">Calorie Target</Label>
+              <Label htmlFor="calorieTarget">Calories (cal)</Label>
               <Input
                 id="calorieTarget"
                 type="text"
@@ -264,7 +264,7 @@ const SummaryCard = () => {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="proteinTarget">Protein Target</Label>
+              <Label htmlFor="proteinTarget">Protein (g)</Label>
               <Input
                 id="proteinTarget"
                 type="text"
@@ -276,7 +276,7 @@ const SummaryCard = () => {
               />
             </div>
             <h3>
-              Biometrics{" "}
+              About you{" "}
               <span className="text-muted-foreground">(optional)</span>
             </h3>
             <div className="grid grid-cols-2 gap-4">
@@ -313,7 +313,7 @@ const SummaryCard = () => {
                 </Select>
               </div>
               <div className="flex flex-col gap-2">
-                <Label htmlFor="weight">Weight</Label>
+                <Label htmlFor="weight">Weight  (kg)</Label>
                 <Input
                   id="weight"
                   type="text"
@@ -326,7 +326,7 @@ const SummaryCard = () => {
                 />
               </div>
               <div className="flex flex-col gap-2">
-                <Label htmlFor="height">Height</Label>
+                <Label htmlFor="height">Height (cm)</Label>
                 <Input
                   id="height"
                   type="text"

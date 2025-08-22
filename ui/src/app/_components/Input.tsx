@@ -57,7 +57,7 @@ const Input = () => {
         <Button
           onClick={handleAddClick}
           disabled={isPending || !input.trim()}
-          className="absolute right-4 top-1/2 -translate-y-1/2 rounded-3xl cursor-pointer"
+          className="absolute right-4 top-1/2 -translate-y-1/2 rounded-3xl"
           size="icon"
         >
           <ArrowUpIcon />

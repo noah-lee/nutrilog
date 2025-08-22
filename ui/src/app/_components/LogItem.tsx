@@ -164,7 +164,7 @@ const LogItem: FC<Props> = ({ log }) => {
       <SheetTrigger asChild>
         <Button
           variant="ghost"
-          className="w-full h-[64px] p-2 flex gap-2 justify-between items-center rounded-none cursor-pointer"
+          className="w-full h-[64px] p-2 flex gap-2 justify-between items-center rounded-none"
         >
           <div className="min-w-0 flex-1 flex items-center gap-2">
             <div className="w-[36px] h-[36px] rounded-full pointer-events-none flex justify-center items-center bg-secondary">

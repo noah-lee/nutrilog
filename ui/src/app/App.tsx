@@ -4,10 +4,17 @@ import LogList from "@/app/_components/LogList";
 import SummaryCard from "@/app/_components/SummaryCard";
 import { Button } from "@/components/Button";
 import { useAuth } from "@/hooks/useAuth";
-import { HeartHandshakeIcon } from "lucide-react";
+import { useTheme } from "@/hooks/useTheme";
+import {
+  HeartHandshakeIcon,
+  LoaderCircleIcon,
+  MoonIcon,
+  SunIcon,
+} from "lucide-react";
 
 const App = () => {
-  const { me } = useAuth();
+  const { theme, onThemeChange } = useTheme();
+  const { me, loading } = useAuth();
 
   const handleSignOut = async () => {
     try {
@@ -19,12 +26,16 @@ const App = () => {
   };
 
   const handleSignIn = async () => {
-    try {
-      window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`;
-    } catch (error) {
-      console.error("Failed to sign in", error);
-    }
+    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`;
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <LoaderCircleIcon size={64} className="animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-svh max-w-vw flex flex-col antialiased">
@@ -33,11 +44,20 @@ const App = () => {
           <HeartHandshakeIcon />
           <h1 className="text-2xl font-bold">Nutrilog</h1>
         </div>
-        {me && (
-          <Button variant="outline" onClick={handleSignOut}>
-            Sign out
+        <div className="flex gap-2 items-center ">
+          {me && (
+            <Button variant="outline" onClick={handleSignOut}>
+              Sign out
+            </Button>
+          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => onThemeChange(theme === "dark" ? "light" : "dark")}
+          >
+            {theme === "dark" ? <SunIcon /> : <MoonIcon />}
           </Button>
-        )}
+        </div>
       </header>
       <main className="container flex-1 flex flex-col items-center gap-4">
         {me ? (
