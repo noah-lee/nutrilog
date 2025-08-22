@@ -28,7 +28,7 @@ const authRoutes = (fastify: FastifyInstance) => {
 
       reply.setCookie("access_token", accessToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        // secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
         path: "/api",
         maxAge: 1000 * 60 * 60 * 24, // 24 hours
@@ -41,7 +41,7 @@ const authRoutes = (fastify: FastifyInstance) => {
   fastify.post("/signout", async (_, reply) => {
     reply.clearCookie("access_token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      // secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/api",
     });
