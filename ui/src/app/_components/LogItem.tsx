@@ -48,7 +48,7 @@ const LogItem: FC<Props> = ({ log }) => {
   const [protein, setProtein] = useState(isFood ? log.protein.toString() : "0");
   const [deleteConfirm, setDeleteConfirm] = useState(false);
 
-  const isValid = !!description && !!+calories && (isFood ? !!+protein : true);
+  const isValid = !!description && !!calories && (isFood ? !!protein : true);
 
   const { mutate: updateFoodLog, isPending: isPendingUpdateFoodLog } =
     useUpdateFoodLog(client, {

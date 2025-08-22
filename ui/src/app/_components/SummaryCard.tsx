@@ -4,6 +4,7 @@ import { Badge } from "@/components/Badge";
 import { Button } from "@/components/Button";
 import { Card } from "@/components/Card";
 import { Input } from "@/components/Input";
+import { Label } from "@/components/Label";
 import { Progress } from "@/components/Progress";
 import {
   Select,
@@ -27,7 +28,6 @@ import { sumBy } from "@/utils/arrays";
 import { formatISODateTime, getEndDate, getStartDate } from "@/utils/dates";
 import { convertStringToPositiveInteger } from "@/utils/numbers";
 import { cn } from "@/utils/styles";
-import { Label } from "@radix-ui/react-label";
 import { BeefIcon, DumbbellIcon, Edit2Icon, UtensilsIcon } from "lucide-react";
 import { useMemo, useState, type ChangeEvent } from "react";
 
@@ -43,11 +43,21 @@ const SummaryCard = () => {
 
   const [open, setOpen] = useState(false);
 
-  const [calorieTarget, setCalorieTarget] = useState(me!.calories.toString());
-  const [proteinTarget, setProteinTarget] = useState(me!.protein.toString());
-  const [weight, setWeight] = useState(me!.weight.toString());
-  const [height, setHeight] = useState(me!.height.toString());
-  const [sex, setSex] = useState<"male" | "female" | "other">(me!.sex);
+  const initialCalorieTarget = me!.calories.toString();
+  const initialProteinTarget = me!.protein.toString();
+  const initialAge = me!.age?.toString() ?? "";
+  const initialWeight = me!.weight?.toString() ?? "";
+  const initialHeight = me!.height?.toString() ?? "";
+  const initialSex = me!.sex ?? "";
+
+  const [calorieTarget, setCalorieTarget] = useState(initialCalorieTarget);
+  const [proteinTarget, setProteinTarget] = useState(initialProteinTarget);
+  const [age, setAge] = useState(initialAge);
+  const [weight, setWeight] = useState(initialWeight);
+  const [height, setHeight] = useState(initialHeight);
+  const [sex, setSex] = useState<"male" | "female" | "other" | "">(initialSex);
+
+  const isValid = !!calorieTarget && !!proteinTarget;
 
   const { data: foodLogs, isLoading: isLoadingFoodLogs } =
     useGetFoodLogs(queries);
@@ -79,6 +89,15 @@ const SummaryCard = () => {
   const calorieOffset = Number(calorieTarget) - caloriesTotal;
   const proteinOffset = Number(proteinTarget) - proteinTotal;
 
+  const handleReset = () => {
+    setCalorieTarget(initialCalorieTarget);
+    setProteinTarget(initialProteinTarget);
+    setAge(initialAge);
+    setWeight(initialWeight);
+    setHeight(initialHeight);
+    setSex(initialSex);
+  };
+
   const handleCalorieTargetChange = (event: ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value;
 
@@ -89,6 +108,12 @@ const SummaryCard = () => {
     const input = event.target.value;
 
     setProteinTarget(convertStringToPositiveInteger(input));
+  };
+
+  const handleAgeChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+
+    setAge(convertStringToPositiveInteger(input));
   };
 
   const handleWeightChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -111,7 +136,7 @@ const SummaryCard = () => {
     <Sheet
       open={open}
       onOpenChange={(open) => {
-        // handleReset();
+        handleReset();
         setOpen(open);
       }}
     >
@@ -176,18 +201,18 @@ const SummaryCard = () => {
       </Card>
       <SheetContent
         side={isMobile ? "bottom" : "right"}
-        className={cn(isMobile ? "h-[80%]" : "h-[100%]")}
+        className={cn(isMobile ? "h-[80%]" : "h-[100%]", "overflow-y-auto")}
       >
         <SheetHeader>
           <SheetTitle>Edit Profile</SheetTitle>
           <SheetDescription>
-            Update your biometrics, and calories and protein goals. Click save
-            when you're done.
+            Update your calorie and protein goals, and personal details (age,
+            sex, height, weight). Click save when you're done.
           </SheetDescription>
         </SheetHeader>
         <div className="flex flex-col gap-4 justify-between px-4">
           <div className="flex flex-col gap-4">
-            <p className="font-semibold">Daily Goal</p>
+            <h3>Daily Goal</h3>
             <div className="flex flex-col gap-2">
               <Label htmlFor="calorieTarget">Calorie Target</Label>
               <Input
@@ -210,43 +235,63 @@ const SummaryCard = () => {
                 disabled={isLoading}
               />
             </div>
-            <p className="font-semibold">Biometrics</p>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="weight">Weight</Label>
-              <Input
-                id="weight"
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                value={weight}
-                onChange={handleWeightChange}
-                disabled={isLoading}
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="height">Height</Label>
-              <Input
-                id="height"
-                type="text"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                value={height}
-                onChange={handleHeightChange}
-                disabled={isLoading}
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="sex">Sex</Label>
-              <Select value={sex} onValueChange={handleSexChange}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select your sex" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="male">Male</SelectItem>
-                  <SelectItem value="female">Female</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectContent>
-              </Select>
+            <h3>
+              Biometrics{" "}
+              <span className="text-muted-foreground">(optional)</span>
+            </h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="age">Age</Label>
+                <Input
+                  id="age"
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  value={age}
+                  onChange={handleAgeChange}
+                  disabled={isLoading}
+                  placeholder="e.g. 25"
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="sex">Sex</Label>
+                <Select value={sex} onValueChange={handleSexChange}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select your sex" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="male">Male</SelectItem>
+                    <SelectItem value="female">Female</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="weight">Weight</Label>
+                <Input
+                  id="weight"
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  value={weight}
+                  onChange={handleWeightChange}
+                  disabled={isLoading}
+                  placeholder="e.g. 80 kg"
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label htmlFor="height">Height</Label>
+                <Input
+                  id="height"
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  value={height}
+                  onChange={handleHeightChange}
+                  disabled={isLoading}
+                  placeholder="e.g. 175 cm"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -254,16 +299,14 @@ const SummaryCard = () => {
           <Button
             variant="secondary"
             onClick={() => {
-              // handleReset();
+              handleReset();
               setOpen(false);
             }}
             disabled={isLoading}
           >
             Cancel
           </Button>
-          {/* <Button disabled={!isValid || isLoading} onClick={handleSave}>
-            Save
-          </Button> */}
+          <Button disabled={!isValid || isLoading}>Save</Button>
         </div>
       </SheetContent>
     </Sheet>

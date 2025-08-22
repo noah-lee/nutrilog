@@ -4,9 +4,10 @@ export type User = {
   email: string;
   calories: number;
   protein: number;
-  weight: number;
-  height: number;
-  sex: "male" | "female" | "other";
+  age: number | null;
+  sex: "male" | "female" | "other" | null;
+  weight: number | null;
+  height: number | null;
   created_at: string;
 };
 
