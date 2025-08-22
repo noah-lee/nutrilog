@@ -1,4 +1,4 @@
-import type { User } from "@/api/auth/types";
+import type { User } from "@/api/profile/types";
 import { createContext, useContext } from "react";
 
 

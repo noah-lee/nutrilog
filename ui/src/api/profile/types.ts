@@ -11,4 +11,12 @@ export type User = {
   created_at: string;
 };
 
-export type GetAuthStatusResponse = User;
+export type GetMeResponse = User;
+
+export type UpdateMeRequest = {
+  data: Partial<
+    Pick<User, "calories" | "protein" | "age" | "sex" | "weight" | "height">
+  >;
+};
+
+export type UpdateMeResponse = User;

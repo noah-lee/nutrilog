@@ -28,7 +28,6 @@ const Input = () => {
     mutate({
       data: {
         prompt: input,
-        biometrics: { sex: "male", age: 33, weight: 65, height: 165 },
         start: formatISODateTime(getStartDate()),
         end: formatISODateTime(getEndDate()),
       },

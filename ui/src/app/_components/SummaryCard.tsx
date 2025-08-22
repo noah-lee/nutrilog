@@ -1,3 +1,4 @@
+import { useUpdateMe } from "@/api/profile/hooks";
 import { useGetActivityLogs } from "@/api/nutrition/activities/hooks";
 import { useGetFoodLogs } from "@/api/nutrition/foods/hooks";
 import { Badge } from "@/components/Badge";
@@ -28,10 +29,14 @@ import { sumBy } from "@/utils/arrays";
 import { formatISODateTime, getEndDate, getStartDate } from "@/utils/dates";
 import { convertStringToPositiveInteger } from "@/utils/numbers";
 import { cn } from "@/utils/styles";
+import { useQueryClient } from "@tanstack/react-query";
 import { BeefIcon, DumbbellIcon, Edit2Icon, UtensilsIcon } from "lucide-react";
-import { useMemo, useState, type ChangeEvent } from "react";
+import { useEffect, useMemo, useState, type ChangeEvent } from "react";
+
+const DESELECT_SEX = "none";
 
 const SummaryCard = () => {
+  const client = useQueryClient();
   const { me } = useAuth();
 
   const isMobile = useIsMobile();
@@ -48,23 +53,35 @@ const SummaryCard = () => {
   const initialAge = me!.age?.toString() ?? "";
   const initialWeight = me!.weight?.toString() ?? "";
   const initialHeight = me!.height?.toString() ?? "";
-  const initialSex = me!.sex ?? "";
+  const initialSex = me!.sex ?? null;
 
   const [calorieTarget, setCalorieTarget] = useState(initialCalorieTarget);
   const [proteinTarget, setProteinTarget] = useState(initialProteinTarget);
   const [age, setAge] = useState(initialAge);
   const [weight, setWeight] = useState(initialWeight);
   const [height, setHeight] = useState(initialHeight);
-  const [sex, setSex] = useState<"male" | "female" | "other" | "">(initialSex);
+  const [sex, setSex] = useState<"male" | "female" | "other" | null>(
+    initialSex
+  );
 
   const isValid = !!calorieTarget && !!proteinTarget;
+
+  const { mutate: updateMe, isPending: isPendingUpdateMe } = useUpdateMe(
+    client,
+    {
+      onSuccess: () => {
+        setOpen(false);
+      },
+    }
+  );
 
   const { data: foodLogs, isLoading: isLoadingFoodLogs } =
     useGetFoodLogs(queries);
   const { data: activityLogs, isLoading: isLoadingActivityLogs } =
     useGetActivityLogs(queries);
 
-  const isLoading = isLoadingFoodLogs || isLoadingActivityLogs;
+  const isLoading =
+    isLoadingFoodLogs || isLoadingActivityLogs || isPendingUpdateMe;
 
   const foodCaloriesTotal = useMemo(
     () => sumBy(foodLogs ?? [], "calories"),
@@ -88,15 +105,6 @@ const SummaryCard = () => {
 
   const calorieOffset = Number(calorieTarget) - caloriesTotal;
   const proteinOffset = Number(proteinTarget) - proteinTotal;
-
-  const handleReset = () => {
-    setCalorieTarget(initialCalorieTarget);
-    setProteinTarget(initialProteinTarget);
-    setAge(initialAge);
-    setWeight(initialWeight);
-    setHeight(initialHeight);
-    setSex(initialSex);
-  };
 
   const handleCalorieTargetChange = (event: ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value;
@@ -128,9 +136,41 @@ const SummaryCard = () => {
     setHeight(convertStringToPositiveInteger(input));
   };
 
-  const handleSexChange = (value: "male" | "female" | "other") => {
-    setSex(value);
+  const handleSexChange = (
+    value: "male" | "female" | "other" | typeof DESELECT_SEX
+  ) => {
+    setSex(value === DESELECT_SEX ? null : value);
   };
+
+  const handleReset = () => {
+    setCalorieTarget(initialCalorieTarget);
+    setProteinTarget(initialProteinTarget);
+    setAge(initialAge);
+    setWeight(initialWeight);
+    setHeight(initialHeight);
+    setSex(initialSex);
+  };
+
+  const handleSave = () => {
+    if (!isValid) {
+      return;
+    }
+
+    updateMe({
+      data: {
+        calories: +calorieTarget,
+        protein: +proteinTarget,
+        age: age ? +age : null,
+        weight: weight ? +weight : null,
+        height: height ? +height : null,
+        sex,
+      },
+    });
+  };
+
+  useEffect(() => {
+    handleReset();
+  }, [me]);
 
   return (
     <Sheet
@@ -255,7 +295,7 @@ const SummaryCard = () => {
               </div>
               <div className="flex flex-col gap-2">
                 <Label htmlFor="sex">Sex</Label>
-                <Select value={sex} onValueChange={handleSexChange}>
+                <Select value={sex ?? ""} onValueChange={handleSexChange}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select your sex" />
                   </SelectTrigger>
@@ -263,6 +303,12 @@ const SummaryCard = () => {
                     <SelectItem value="male">Male</SelectItem>
                     <SelectItem value="female">Female</SelectItem>
                     <SelectItem value="other">Other</SelectItem>
+                    <SelectItem
+                      value={DESELECT_SEX}
+                      className="text-muted-foreground italic"
+                    >
+                      Prefer not to say
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -306,7 +352,9 @@ const SummaryCard = () => {
           >
             Cancel
           </Button>
-          <Button disabled={!isValid || isLoading}>Save</Button>
+          <Button disabled={!isValid || isLoading} onClick={handleSave}>
+            Save
+          </Button>
         </div>
       </SheetContent>
     </Sheet>

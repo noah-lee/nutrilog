@@ -21,6 +21,7 @@ import {
   SheetTitle,
 } from "@/components/Sheet";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { convertStringToPositiveInteger } from "@/utils/numbers";
 import { cn } from "@/utils/styles";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -30,7 +31,7 @@ import {
   TrashIcon,
   UtensilsIcon,
 } from "lucide-react";
-import { useState, type ChangeEvent, type FC } from "react";
+import { useEffect, useState, type ChangeEvent, type FC } from "react";
 
 interface Props {
   log: Log;
@@ -53,7 +54,6 @@ const LogItem: FC<Props> = ({ log }) => {
   const { mutate: updateFoodLog, isPending: isPendingUpdateFoodLog } =
     useUpdateFoodLog(client, {
       onSuccess: () => {
-        handleReset();
         setOpen(false);
       },
     });
@@ -61,7 +61,6 @@ const LogItem: FC<Props> = ({ log }) => {
   const { mutate: updateActivityLog, isPending: isPendingUpdateActivityLog } =
     useUpdateActivityLog(client, {
       onSuccess: () => {
-        handleReset();
         setOpen(false);
       },
     });
@@ -69,7 +68,6 @@ const LogItem: FC<Props> = ({ log }) => {
   const { mutate: deleteFoodLog, isPending: isPendingDeleteFoodLog } =
     useDeleteFoodLog(client, {
       onSuccess: () => {
-        handleReset();
         setOpen(false);
       },
     });
@@ -77,7 +75,6 @@ const LogItem: FC<Props> = ({ log }) => {
   const { mutate: deleteActivityLog, isPending: isPendingDeleteActivityLog } =
     useDeleteActivityLog(client, {
       onSuccess: () => {
-        handleReset();
         setOpen(false);
       },
     });
@@ -95,27 +92,13 @@ const LogItem: FC<Props> = ({ log }) => {
   const handleCaloriesChange = (event: ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value;
 
-    if (input === "") {
-      setCalories("");
-      return;
-    }
-
-    if (/^[1-9]\d*$/.test(input)) {
-      setCalories(input);
-    }
+    setCalories(convertStringToPositiveInteger(input));
   };
 
   const handleProteinChange = (event: ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value;
 
-    if (input === "") {
-      setProtein("");
-      return;
-    }
-
-    if (/^[1-9]\d*$/.test(input)) {
-      setProtein(input);
-    }
+    setProtein(convertStringToPositiveInteger(input));
   };
 
   const handleReset = () => {
@@ -165,6 +148,10 @@ const LogItem: FC<Props> = ({ log }) => {
       });
     }
   };
+
+  useEffect(() => {
+    handleReset();
+  }, [log]);
 
   return (
     <Sheet
