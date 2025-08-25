@@ -11,7 +11,8 @@ export const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       refetchOnMount: false,
       retry: (failureCount: number, error: unknown) => {
-        if ((error as ApiError)?.statusCode === 401) {
+        const statusCode = (error as ApiError)?.statusCode;
+        if (statusCode === 401 || statusCode === 404) {
           return false;
         }
         return failureCount < 3;
