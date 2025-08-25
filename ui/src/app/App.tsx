@@ -12,6 +12,8 @@ import {
   SunIcon,
 } from "lucide-react";
 
+const API_URL = import.meta.env.VITE_API_URL! as string;
+
 const App = () => {
   const { theme, onThemeChange } = useTheme();
   const { me, loading } = useAuth();
@@ -26,7 +28,7 @@ const App = () => {
   };
 
   const handleSignIn = async () => {
-    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`;
+    window.location.href = `${API_URL}/api/auth/google`;
   };
 
   if (loading) {
