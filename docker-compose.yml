@@ -18,7 +18,7 @@ services:
       context: ./api
       dockerfile: Dockerfile
     ports:
-      - "${API_PORT}:3000"
+      - "${API_PORT}:8000"
     environment:
       - NODE_ENV=production
       - CORS_ORIGIN=${DOMAIN_URL}
